@@ -412,7 +412,7 @@
       width: 100%;
       margin-top: 1rem;
       padding: 0 1.5rem;
-      -webkit-user-select: none; /* Prevent text selection during swipe */
+      -webkit-user-select: none;
       user-select: none;
     }
 
@@ -427,8 +427,8 @@
       width: 100%;
       position: relative;
       touch-action: pan-x;
-      scroll-snap-type: none; /* Completely disable snapping */
-      overscroll-behavior-x: contain; /* Prevent bounce-back or snapping */
+      scroll-snap-type: none;
+      overscroll-behavior-x: contain;
     }
 
     .carousel::-webkit-scrollbar {
@@ -448,8 +448,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      scroll-snap-align: none; /* Disable snapping for items */
-      flex-shrink: 0; /* Prevent items from shrinking */
+      scroll-snap-align: none;
+      flex-shrink: 0;
     }
 
     .carousel-item img {
@@ -581,7 +581,13 @@
       }
       
       .actions {
-        display: none;
+        margin: 1rem 0;
+        gap: 0.75rem;
+      }
+      
+      .actions button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
       }
       
       .pricing-section {
@@ -738,8 +744,8 @@
         <h2 id="dish-tagline">#1 Most Popular Restaurant</h2>
         <h1 id="main-dish-name"><span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span></h1>
         <div class="actions">
-          <button id="play-video"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Watch</button>
-          <button id="order-food"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> Order Now</button>
+          <button id="take-pic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg> Take a Pic</button>
+          <button id="add-to-list"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add to List</button>
         </div>
       </div>
     </div>
@@ -900,8 +906,8 @@
     const dishPrice = document.getElementById('dish-price');
     const likeButton = document.getElementById('like-button');
     const dislikeButton = document.getElementById('dislike-button');
-    const playVideo = document.getElementById('play-video');
-    const orderFood = document.getElementById('order-food');
+    const takePicButton = document.getElementById('take-pic');
+    const addToListButton = document.getElementById('add-to-list');
     const carouselLeft = document.getElementById('carousel-left');
     const carouselRight = document.getElementById('carousel-right');
     const categoryLeft = document.getElementById('category-left');
@@ -1067,12 +1073,12 @@
       }
     });
 
-    playVideo.addEventListener('click', () => {
-      alert('Video playback feature coming soon!');
+    takePicButton.addEventListener('click', () => {
+      alert('Camera feature coming soon! Take a picture of this dish.');
     });
 
-    orderFood.addEventListener('click', () => {
-      alert('Thank you for your interest! Order feature coming soon.');
+    addToListButton.addEventListener('click', () => {
+      alert('Added to your list! This feature is coming soon.');
     });
 
     // Initialize the page
