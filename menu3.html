@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eazy Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+   :root {
+  --primary-color: #ff6600;
+  --primary-hover: #e65c00;
+  --text-color: #333;
+  --light-text: #888;
+  --background: linear-gradient(120deg, #ffffff, #f7f7f7);
+  --card-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.08);
+  --transition: all 0.3s ease;
+  --border-radius: 12px;
+  --container-width: 1200px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  color: var(--text-color);
+  padding: 0;
+  animation: fadeIn 1s ease-in;
+  overflow-x: hidden;
+  min-height: 100vh;
+  width: 100%;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 1rem;
+  position: relative;
+  width: 100%;
+}
+
+/* Category Section Styling */
+.category-section {
+  width: 100%;
+  margin-bottom: 2rem;
+  position: relative;
+  padding: 0 1rem;
+}
+
+.category-section h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.category-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 50%;
+  height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.category-list {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0.5rem 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: 0;
+  width: 100%;
+}
+
+.category-list::-webkit-scrollbar {
+  display: none;
+}
+
+.category-item {
+  background: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  transition: var(--transition);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.category-item:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
+}
+
+.category-item.active {
+  background: var(--primary-color);
+  color: white;
+  font-weight: 600;
+}
+
+.category-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: var(--transition);
+  z-index: 10;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.category-arrow:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.category-arrow.left {
+  left: 0.5rem;
+}
+
+.category-arrow.right {
+  right: 0.5rem;
+}
+
+/* Hero Section Styling */
+.dish-image-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  contain: layout;
+}
+
+.dish-image {
+  width: 100%;
+  max-width: 30rem;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  will-change: transform;
+  contain: layout;
+}
+
+.dish-image:hover:not(.changing):not(.entering) {
+  transform: scale(1.05);
+  transition-delay: 0.1s;
+}
+
+.dish-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: none;
+}
+
+@keyframes rollOutRight {
+  0% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes rollInLeft {
+  0% {
+    transform: translateX(-100%) rotate(-360deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.dish-image.changing {
+  animation: rollOutRight 0.5s ease forwards;
+}
+
+.dish-image.entering {
+  animation: rollInLeft 0.5s ease forwards;
+}
+
+.dish-image:not(.changing):not(.entering) {
+  transform: translateX(0) rotate(0deg);
+}
+
+/* Info Section Styling */
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  text-align: center;
+}
+
+.info-section h2 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--light-text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: opacity 0.5s ease;
+}
+
+.info-section h1 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+}
+
+.info-section h1 .line-1,
+.info-section h1 .line-2 {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+.info-section h1 .line-1.changing {
+  animation: hideRight 0.5s ease forwards;
+}
+
+.info-section h1 .line-1.entering {
+  animation: revealLeft 0.5s ease forwards;
+}
+
+.info-section h1 .line-2.changing {
+  animation: hideLeft 0.5s ease forwards;
+}
+
+.info-section h1 .line-2.entering {
+  animation: revealRight 0.5s ease forwards;
+}
+
+@keyframes revealLeft {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes hideRight {
+  0% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 100% 0 0); }
+}
+
+@keyframes revealRight {
+  0% { clip-path: inset(0 0 0 100%); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes hideLeft {
+  0% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+
+.actions {
+  margin: 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.actions button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.actions button:first-child {
+  background-color: white;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.actions button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
+}
+
+.actions button:first-child:hover {
+  background-color: rgba(255, 102, 0, 0.1);
+  color: var(--primary-hover);
+}
+
+/* Pricing Section Styling */
+.pricing-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  width: 100%;
+  transition: var(--transition);
+  position: relative;
+  contain: layout;
+  animation: float 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+.price {
+  font-size: 2.2rem;
+  color: var(--primary-color);
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price::before {
+  content: "₹";
+  font-size: 1.5rem;
+}
+
+.chef-name {
+  font-weight: 600;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  transition: opacity 0.5s ease;
+}
+
+.description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+  color: #666;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.description.changing {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.thumbs {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.thumbs span {
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+.thumbs span:hover {
+  color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+/* Carousel Styling */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0 1.5rem;
+}
+
+.carousel {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  width: 100%;
+  position: relative;
+  touch-action: pan-x;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  min-width: 8rem;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  text-align: center;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carousel-item img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+  transition: var(--transition);
+  margin-bottom: 0.5rem;
+}
+
+.carousel-item:hover {
+  transform: scale(1.05);
+}
+
+.carousel-item:hover img {
+  border-color: var(--primary-color);
+}
+
+.carousel-item.active img {
+  border-color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.carousel-item .item-name {
+  margin-top: 0.5rem;
+  font-weight: 500;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  color: var(--primary-color);
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: var(--transition);
+  z-index: 10;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.carousel-arrow:hover {
+  background-color: rgba(255, 102, 0, 0.1);
+  color: var(--primary-hover);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-arrow.left {
+  left: 0;
+}
+
+.carousel-arrow.right {
+  right: 0;
+}
+
+/* Utility Classes */
+.loader {
+  width: 100%;
+  height: 4px;
+  background: #f0f0f0;
+  overflow: hidden;
+  position: relative;
+  border-radius: 2px;
+  margin: 1rem 0;
+}
+
+.loader::after {
+  content: '';
+  width: 40%;
+  height: 100%;
+  background: var(--primary-color);
+  position: absolute;
+  top: 0;
+  left: -40%;
+  animation: loading 1.5s ease infinite;
+  border-radius: 2px;
+}
+
+@keyframes loading {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .container {
+    gap: 1rem;
+    padding: 0.5rem;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .category-section {
+    margin-bottom: 1rem;
+    padding: 0 1.5rem;
+  }
+  
+  .category-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .category-arrow {
+    display: none;
+  }
+  
+  .dish-image {
+    max-width: 30rem;
+  }
+  
+  .info-section {
+    text-align: center;
+    padding: 0 0.5rem;
+  }
+  
+  .info-section h1 {
+    font-size: 1.8rem;
+  }
+  
+  .actions {
+    display: none;
+  }
+  
+  .pricing-section {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .carousel-container {
+    padding: 0;
+    margin-top: 0.5rem;
+  }
+  
+  .carousel {
+    padding: 0.5rem 0;
+  }
+  
+  .carousel-item {
+    min-width: 7rem;
+    padding: 0.75rem;
+  }
+  
+  .carousel-item img {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  
+  .carousel-item .item-name {
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .container {
+    gap: 1.5rem;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .info-section {
+    text-align: center;
+    padding: 0 1rem;
+  }
+  
+  .info-section h1 {
+    font-size: 2.2rem;
+  }
+  
+  .actions {
+    justify-content: center;
+  }
+  
+  .carousel-container {
+    padding: 0 1.5rem;
+  }
+  
+  .category-section {
+    padding: 0 1.5rem;
+  }
+  
+  .carousel-item {
+    min-width: 7.5rem;
+  }
+  
+  .carousel-item img {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    gap: 1.5rem;
+    width: 100%;
+    overflow-x: hidden;
+    padding: 1rem;
+  }
+  
+  .category-section {
+    padding: 0;
+  }
+  
+  .carousel-item {
+    min-width: 8rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .category-section {
+    width: 100%;
+  }
+  
+  .dish-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .info-section {
+    width: 100%;
+  }
+  
+  .carousel-container {
+    width: 100%;
+  }
+  
+  .pricing-section {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="category-section">
+      <h3>Categories</h3>
+      <div class="category-list" id="category-list">
+        <div class="category-item active" data-category="all">All</div>
+        <div class="category-item" data-category="breakfast">Breakfast</div>
+        <div class="category-item" data-category="lunch">Lunch</div>
+        <div class="category-item" data-category="dinner">Dinner</div>
+        <div class="category-item" data-category="beverages">Beverages</div>
+        <div class="category-item" data-category="desserts">Desserts</div>
+        <div class="category-item" data-category="appetizers">Appetizers</div>
+        <div class="category-item" data-category="soups">Soups</div>
+        <div class="category-item" data-category="salads">Salads</div>
+        <div class="category-item" data-category="snacks">Snacks</div>
+        <div class="category-item" data-category="vegetarian">Vegetarian</div>
+        <div class="category-item" data-category="seafood">Seafood</div>
+      </div>
+      <button class="category-arrow left" id="category-left">‹</button>
+      <button class="category-arrow right" id="category-right">›</button>
+    </div>
+    
+    <div class="dish-image-container">
+      <div class="dish-image">
+        <img id="main-dish-image" src="https://img.freepik.com/free-vector/building-restaurant-flat-design_23-2147537664.jpg" />
+      </div>
+    </div>
+    
+    <div class="info-section">
+      <div>
+        <h2 id="dish-tagline">#1 Most Popular Restaurant</h2>
+        <h1 id="main-dish-name"><span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span></h1>
+        <div class="actions">
+          <button id="play-video"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Watch</button>
+          <button id="order-food"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> Order Now</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="carousel-container">
+      <button class="carousel-arrow left" id="carousel-left">‹</button>
+      <div class="carousel" id="carousel">
+        <!-- Items will be populated by JavaScript -->
+      </div>
+      <button class="carousel-arrow right" id="carousel-right">›</button>
+    </div>
+    
+    <div class="pricing-section">
+      <div class="price" id="dish-price">N/A</div>
+      <div class="chef-name" id="chef-name">Chef Feny</div>
+      <div id="main-dish-description" class="description">
+        Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.
+      </div>
+      <div class="thumbs">
+        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
+        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const dishes = [
+      {
+        name: "Idli",
+        image: "./images/idli.jpg",
+        description: "Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.",
+        category: "breakfast",
+        chef: "Chef Feny",
+        price: 40,
+        likes: 98,
+        tagline: "#1 Most Popular Indonesian Dish"
+      },
+      {
+        name: "Vada",
+        image: "./images/vada.jpg",
+        description: "Crispy fried chicken marinated in traditional spices, served hot and fresh with sambal and rice.",
+        category: "breakfast",
+        chef: "Chef Budi",
+        price: 50,
+        likes: 87,
+        tagline: "Signature Crispy Delight"
+      },
+      {
+        name: "Golibaje",
+        image: "./images/golibaji.jpg",
+        description: "Sweet stuffed pancake with layers of chocolate, cheese, and condensed milk. A beloved street food dessert.",
+        category: "desserts",
+        chef: "Chef Indra",
+        price: 60,
+        likes: 92,
+        tagline: "Sweet Street Food Favorite"
+      },
+      {
+        name: "Tea",
+        image: "./images/cha.jpg",
+        description: "Rice cake with rich vegetable curry and coconut milk sauce, perfect for breakfast or light meal.",
+        category: "beverages",
+        chef: "Chef Nina",
+        price: 20,
+        likes: 76,
+        tagline: "Traditional Morning Starter"
+      },
+      {
+        name: "Chicken Biryani",
+        image: "./images/brni.jpg",
+        description: "Fragrant coconut rice served with fried chicken, tempeh, peanuts, and sambal. A complete meal in one plate.",
+        category: "lunch",
+        chef: "Chef Wayan",
+        price: 100,
+        likes: 81,
+        tagline: "Aromatic Coconut Rice Delight"
+      },
+      {
+        name: "Soto Ayam",
+        image: "https://img.freepik.com/free-photo/delicious-indonesian-food-arrangement_23-2148935331.jpg?size=626&ext=jpg",
+        description: "Hearty chicken soup with turmeric broth, rice noodles and fresh herbs, garnished with fried shallots.",
+        category: "soups",
+        chef: "Chef Sari",
+        price: 80,
+        likes: 85,
+        tagline: "Golden Turmeric Chicken Soup"
+      },
+      {
+        name: "Gado-Gado",
+        image: "https://img.freepik.com/free-photo/gado-gado-traditional-indonesian-salad-dish-served-with-peanut-sauce_1150-42979.jpg?size=626&ext=jpg",
+        description: "Mixed vegetables with rich peanut sauce, boiled eggs and crispy crackers. A healthy vegetarian option.",
+        category: "salads",
+        chef: "Chef Dewi",
+        price: 70,
+        likes: 78,
+        tagline: "Veggie Mix with Rich Peanut Sauce"
+      },
+      {
+        name: "Rendang",
+        image: "https://img.freepik.com/free-photo/delicious-beef-rendang-cuisine-served-plate_23-2149086051.jpg?size=626&ext=jpg",
+        description: "Slow-cooked beef in rich coconut milk and complex spice sauce. Known as one of the world's most delicious dishes.",
+        category: "dinner",
+        chef: "Chef Agus",
+        price: 120,
+        likes: 97,
+        tagline: "World-Famous Slow-Cooked Beef"
+      },
+      {
+        name: "Bakso",
+        image: "https://img.freepik.com/free-photo/bakso-meatball-soup-served-with-noodles-ready-eat_450066-966.jpg?size=626&ext=jpg",
+        description: "Beef meatball soup with noodles, fresh greens, crispy wontons and aromatic broth. A street food classic.",
+        category: "soups",
+        chef: "Chef Bambang",
+        price: 90,
+        likes: 84,
+        tagline: "Classic Meatball Comfort Soup"
+      },
+      {
+        name: "Sate Ayam",
+        image: "https://img.freepik.com/free-photo/chicken-skewers-with-slices-sweet-peppers-dill_2829-18813.jpg?size=626&ext=jpg",
+        description: "Grilled chicken skewers with rich peanut sauce and rice cakes. Indonesia's most famous street food.",
+        category: "appetizers",
+        chef: "Chef Putra",
+        price: 85,
+        likes: 91,
+        tagline: "Grilled Skewers with Peanut Sauce"
+      },
+      {
+        name: "Es Cendol",
+        image: "https://img.freepik.com/free-photo/cendol-green-rice-flour-jelly-coconut-milk-gula-melaka-palm-sugar-dessert_1339-52259.jpg?size=626&ext=jpg",
+        description: "Iced dessert with coconut milk, palm sugar syrup and green rice flour jelly. Refreshing and sweet.",
+        category: "beverages",
+        chef: "Chef Maya",
+        price: 45,
+        likes: 82,
+        tagline: "Sweet Coconut Milk Dessert Drink"
+      },
+      {
+        name: "Kue Lapis",
+        image: "https://img.freepik.com/free-photo/kue-lapis-traditional-indonesian-layered-cake-made-with-pandan-coconut-milk_1150-45186.jpg?size=626&ext=jpg",
+        description: "Layered steamed cake with vibrant colors and subtle spice flavors. A festive treat.",
+        category: "desserts",
+        chef: "Chef Lina",
+        price: 55,
+        likes: 79,
+        tagline: "Colorful Layered Steamed Cake"
+      }
+    ];
+
+    // DOM Elements
+    const carousel = document.getElementById('carousel');
+    const categoryList = document.getElementById('category-list');
+    const mainDishImage = document.getElementById('main-dish-image');
+    const mainDishName = document.getElementById('main-dish-name');
+    const mainDishDescription = document.getElementById('main-dish-description');
+    const chefName = document.getElementById('chef-name');
+    const dishTagline = document.getElementById('dish-tagline');
+    const dishPrice = document.getElementById('dish-price');
+    const likeButton = document.getElementById('like-button');
+    const dislikeButton = document.getElementById('dislike-button');
+    const playVideo = document.getElementById('play-video');
+    const orderFood = document.getElementById('order-food');
+    const carouselLeft = document.getElementById('carousel-left');
+    const carouselRight = document.getElementById('carousel-right');
+    const categoryLeft = document.getElementById('category-left');
+    const categoryRight = document.getElementById('category-right');
+
+    // Enhanced functionality
+    let currentDishIndex = -1; // Set to -1 to indicate no dish is selected initially
+    let filteredDishes = [...dishes];
+    let lastSelectedDish = null; // Store the last selected dish object
+
+    // Scroll functions
+    function scrollCarousel(amount) {
+      carousel.scrollBy({
+        left: amount,
+        behavior: 'smooth'
+      });
+    }
+
+    function scrollCategory(amount) {
+      categoryList.scrollBy({
+        left: amount,
+        behavior: 'smooth'
+      });
+    }
+
+    // Event listeners for navigation
+    carouselLeft.addEventListener('click', () => scrollCarousel(-300));
+    carouselRight.addEventListener('click', () => scrollCarousel(300));
+    categoryLeft.addEventListener('click', () => scrollCategory(-200));
+    categoryRight.addEventListener('click', () => scrollCategory(200));
+
+    // Touch events for carousel
+    let carouselTouchStartX = 0;
+    let carouselTouchEndX = 0;
+    
+    carousel.addEventListener('touchstart', (e) => {
+      carouselTouchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    carousel.addEventListener('touchend', (e) => {
+      carouselTouchEndX = e.changedTouches[0].screenX;
+      handleCarouselSwipe();
+    }, { passive: true });
+    
+    function handleCarouselSwipe() {
+      const swipeDistance = carouselTouchStartX - carouselTouchEndX;
+      if (swipeDistance > 50) {
+        scrollCarousel(300);
+      } else if (swipeDistance < -50) {
+        scrollCarousel(-300);
+      }
+    }
+
+    // Touch events for category list
+    let categoryTouchStartX = 0;
+    let categoryTouchEndX = 0;
+    
+    categoryList.addEventListener('touchstart', (e) => {
+      categoryTouchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    categoryList.addEventListener('touchend', (e) => {
+      categoryTouchEndX = e.changedTouches[0].screenX;
+      handleCategorySwipe();
+    }, { passive: true });
+    
+    function handleCategorySwipe() {
+      const swipeDistance = categoryTouchStartX - categoryTouchEndX;
+      if (swipeDistance > 50) {
+        scrollCategory(200);
+      } else if (swipeDistance < -50) {
+        scrollCategory(-200);
+      }
+    }
+
+    // Render carousel items
+    function renderCarousel(category = 'all') {
+      carousel.innerHTML = '';
+      
+      filteredDishes = category === 'all' 
+        ? dishes 
+        : dishes.filter(dish => dish.category === category);
+      
+      filteredDishes.forEach((dish, index) => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        if (lastSelectedDish && dish.name === lastSelectedDish.name) {
+          item.classList.add('active');
+          currentDishIndex = index;
+        }
+        
+        item.innerHTML = `
+          <img src="${dish.image}" alt="${dish.name}" />
+          <div class="item-name">${dish.name}</div>
+        `;
+        
+        item.addEventListener('click', () => {
+          changeDish(index);
+        });
+        
+        carousel.appendChild(item);
+      });
+      
+      // Reset carousel scroll position
+      carousel.scrollLeft = 0;
+    }
+
+    // Change the main dish display
+    function changeDish(index) {
+      if (index === currentDishIndex && currentDishIndex !== -1) return;
+      
+      // Add transition classes
+      mainDishImage.parentElement.classList.add('changing');
+      mainDishName.querySelector('.line-1').classList.add('changing');
+      mainDishName.querySelector('.line-2').classList.add('changing');
+      mainDishDescription.classList.add('changing');
+      
+      // Update after animation
+      setTimeout(() => {
+        const dish = filteredDishes[index];
+        mainDishImage.src = dish.image;
+        const nameParts = dish.name.toUpperCase().split(' ');
+        const line1 = nameParts[0];
+        const line2 = nameParts.slice(1).join(' ');
+        mainDishName.innerHTML = `<span class="line-1">${line1}</span><span class="line-2" style="font-weight: 900;">${line2}</span>`;
+        mainDishDescription.textContent = dish.description;
+        chefName.textContent = dish.chef;
+        dishTagline.textContent = dish.tagline;
+        dishPrice.textContent = dish.price;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
+        
+        // Remove transition classes
+        mainDishImage.parentElement.classList.remove('changing');
+        mainDishDescription.classList.remove('changing');
+        
+        // Add entering animation
+        mainDishImage.parentElement.classList.add('entering');
+        mainDishName.querySelector('.line-1').classList.add('entering');
+        mainDishName.querySelector('.line-2').classList.add('entering');
+        
+        // Explicitly reset transform and clip-path after animation
+        setTimeout(() => {
+          mainDishImage.parentElement.classList.remove('entering');
+          mainDishImage.parentElement.style.transform = 'translateX(0) rotate(0deg)';
+          mainDishName.querySelector('.line-1').classList.remove('entering');
+          mainDishName.querySelector('.line-2').classList.remove('entering');
+          mainDishName.querySelector('.line-1').style.clipPath = 'inset(0 0 0 0)';
+          mainDishName.querySelector('.line-2').style.clipPath = 'inset(0 0 0 0)';
+        }, 600);
+        
+        // Update active carousel item
+        document.querySelectorAll('.carousel-item').forEach((item, i) => {
+          if (i === index) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+        
+        currentDishIndex = index;
+        lastSelectedDish = dish; // Store the newly selected dish
+      }, 500);
+    }
+
+    // Filter dishes by category
+    function filterDishes(category) {
+      document.querySelectorAll('.category-item').forEach(item => {
+        if (item.dataset.category === category) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      // Update filtered dishes and render carousel without resetting the display
+      renderCarousel(category);
+
+      // If no dish has been selected, set initial restaurant details
+      if (!lastSelectedDish) {
+        currentDishIndex = -1;
+        mainDishImage.src = "https://img.freepik.com/free-vector/building-restaurant-flat-design_23-2147537664.jpg";
+        mainDishName.innerHTML = `<span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span>`;
+        mainDishDescription.textContent = "Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.";
+        chefName.textContent = "Chef Feny";
+        dishTagline.textContent = "#1 Most Popular Restaurant";
+        dishPrice.textContent = "N/A";
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes`;
+      }
+    }
+
+    // Event listeners for category filtering
+    categoryList.addEventListener('click', (e) => {
+      if (e.target.classList.contains('category-item')) {
+        filterDishes(e.target.dataset.category);
+      }
+    });
+
+    // Interactive elements
+    likeButton.addEventListener('click', () => {
+      if (lastSelectedDish) {
+        lastSelectedDish.likes++;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${lastSelectedDish.likes} likes`;
+        likeButton.style.color = 'var(--primary-color)';
+        setTimeout(() => {
+          likeButton.style.color = '';
+        }, 500);
+      }
+    });
+
+    playVideo.addEventListener('click', () => {
+      alert('Video playback feature coming soon!');
+    });
+
+    orderFood.addEventListener('click', () => {
+      alert('Thank you for your interest! Order feature coming soon.');
+    });
+
+    // Initialize the page
+    renderCarousel();
+  </script>
+</body>
+</html>
