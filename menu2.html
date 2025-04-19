@@ -412,6 +412,8 @@
       width: 100%;
       margin-top: 1rem;
       padding: 0 1.5rem;
+      -webkit-user-select: none; /* Prevent text selection during swipe */
+      user-select: none;
     }
 
     .carousel {
@@ -419,14 +421,14 @@
       align-items: center;
       gap: 1.5rem;
       overflow-x: scroll;
-      scroll-behavior: smooth;
       padding: 1rem 0.5rem;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       width: 100%;
       position: relative;
       touch-action: pan-x;
-      scroll-snap-type: none; /* Disable snapping */
+      scroll-snap-type: none; /* Completely disable snapping */
+      overscroll-behavior-x: contain; /* Prevent bounce-back or snapping */
     }
 
     .carousel::-webkit-scrollbar {
@@ -447,6 +449,7 @@
       flex-direction: column;
       align-items: center;
       scroll-snap-align: none; /* Disable snapping for items */
+      flex-shrink: 0; /* Prevent items from shrinking */
     }
 
     .carousel-item img {
@@ -757,7 +760,7 @@
       </div>
       <div class="thumbs">
         <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
-        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
+        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38-9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -929,50 +932,6 @@
     carouselRight.addEventListener('click', () => scrollCarousel(300));
     categoryLeft.addEventListener('click', () => scrollCategory(-200));
     categoryRight.addEventListener('click', () => scrollCategory(200));
-
-    // Touch events for carousel
-    let carouselTouchStartX = 0;
-    let carouselTouchEndX = 0;
-    
-    carousel.addEventListener('touchstart', (e) => {
-      carouselTouchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    
-    carousel.addEventListener('touchend', (e) => {
-      carouselTouchEndX = e.changedTouches[0].screenX;
-      handleCarouselSwipe();
-    }, { passive: true });
-    
-    function handleCarouselSwipe() {
-      const swipeDistance = carouselTouchStartX - carouselTouchEndX;
-      if (swipeDistance > 50) {
-        scrollCarousel(300);
-      } else if (swipeDistance < -50) {
-        scrollCarousel(-300);
-      }
-    }
-
-    // Touch events for category list
-    let categoryTouchStartX = 0;
-    let categoryTouchEndX = 0;
-    
-    categoryList.addEventListener('touchstart', (e) => {
-      categoryTouchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    
-    categoryList.addEventListener('touchend', (e) => {
-      categoryTouchEndX = e.changedTouches[0].screenX;
-      handleCategorySwipe();
-    }, { passive: true });
-    
-    function handleCategorySwipe() {
-      const swipeDistance = categoryTouchStartX - categoryTouchEndX;
-      if (swipeDistance > 50) {
-        scrollCategory(200);
-      } else if (swipeDistance < -50) {
-        scrollCategory(-200);
-      }
-    }
 
     // Render carousel items
     function renderCarousel(category = 'all') {
