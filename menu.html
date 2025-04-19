@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lotek Perkedel - Indonesian Culinary Experience</title>
+  <title>Eazy Menu</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
    :root {
@@ -41,10 +41,10 @@ body {
 }
 
 .container {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
-  align-items: start;
+  align-items: center;
   max-width: var(--container-width);
   margin: 0 auto;
   padding: 1rem;
@@ -54,7 +54,6 @@ body {
 
 /* Category Section Styling */
 .category-section {
-  grid-column: 1 / -1;
   width: 100%;
   margin-bottom: 2rem;
   position: relative;
@@ -229,6 +228,7 @@ body {
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
+  text-align: center;
 }
 
 .info-section h2 {
@@ -248,6 +248,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  justify-content: center;
 }
 
 .info-section h1 .line-1,
@@ -298,6 +299,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  justify-content: center;
 }
 
 .actions button {
@@ -410,10 +412,9 @@ body {
 
 /* Carousel Styling */
 .carousel-container {
-  grid-column: 1 / 3;
   position: relative;
   width: 100%;
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 0 1.5rem;
 }
 
@@ -427,6 +428,8 @@ body {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   width: 100%;
+  position: relative;
+  touch-action: pan-x;
 }
 
 .carousel::-webkit-scrollbar {
@@ -434,12 +437,18 @@ body {
 }
 
 .carousel-item {
-  min-width: 6rem;
+  min-width: 8rem;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
   text-align: center;
   font-size: 0.85rem;
   cursor: pointer;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  padding: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .carousel-item img {
@@ -449,11 +458,11 @@ body {
   object-fit: cover;
   border: 3px solid #f0f0f0;
   transition: var(--transition);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  margin-bottom: 0.5rem;
 }
 
 .carousel-item:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .carousel-item:hover img {
@@ -468,34 +477,33 @@ body {
 .carousel-item .item-name {
   margin-top: 0.5rem;
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 6rem;
+  white-space: normal;
+  line-height: 1.4;
 }
 
 .carousel-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: var(--primary-color);
-  color: white;
+  background: white;
+  color: var(--primary-color);
   border: none;
   border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   transition: var(--transition);
   z-index: 10;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
 }
 
 .carousel-arrow:hover {
-  background-color: var(--primary-hover);
+  background-color: rgba(255, 102, 0, 0.1);
+  color: var(--primary-hover);
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -538,7 +546,6 @@ body {
 /* Responsive Design - Improved */
 @media (max-width: 480px) {
   .container {
-    grid-template-columns: 1fr;
     gap: 1rem;
     padding: 0.5rem;
     width: 100%;
@@ -556,9 +563,7 @@ body {
   }
   
   .category-arrow {
-    width: 2rem;
-    height: 2rem;
-    font-size: 1rem;
+    display: none;
   }
   
   .dish-image {
@@ -575,14 +580,7 @@ body {
   }
   
   .actions {
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .actions button {
-    width: 100%;
-    justify-content: center;
+    display: none;
   }
   
   .rating-section {
@@ -591,9 +589,8 @@ body {
   }
   
   .carousel-container {
-    grid-column: 1;
     padding: 0;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
   
   .carousel {
@@ -601,7 +598,8 @@ body {
   }
   
   .carousel-item {
-    min-width: 4.5rem;
+    min-width: 7rem;
+    padding: 0.75rem;
   }
   
   .carousel-item img {
@@ -610,14 +608,12 @@ body {
   }
   
   .carousel-item .item-name {
-    font-size: 0.7rem;
-    max-width: 4.5rem;
+    font-size: 0.75rem;
   }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
   .container {
-    grid-template-columns: 1fr;
     gap: 1.5rem;
     width: 100%;
     overflow-x: hidden;
@@ -637,18 +633,25 @@ body {
   }
   
   .carousel-container {
-    grid-column: 1;
     padding: 0 1.5rem;
   }
   
   .category-section {
     padding: 0 1.5rem;
   }
+  
+  .carousel-item {
+    min-width: 7.5rem;
+  }
+  
+  .carousel-item img {
+    width: 4rem;
+    height: 4rem;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .container {
-    grid-template-columns: 1fr 1.5fr;
     gap: 1.5rem;
     width: 100%;
     overflow-x: hidden;
@@ -656,25 +659,47 @@ body {
   }
   
   .category-section {
-    grid-column: 1 / 3;
     padding: 0;
   }
   
-  .rating-section {
-    grid-column: 1 / 3;
-    margin-top: 1rem;
-  }
-  
-  .carousel-container {
-    grid-column: 1 / 3;
+  .carousel-item {
+    min-width: 8rem;
   }
 }
 
 @media (min-width: 1025px) {
   .container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
     padding: 1rem;
     width: 100%;
     overflow-x: hidden;
+  }
+  
+  .category-section {
+    width: 100%;
+  }
+  
+  .dish-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .info-section {
+    width: 100%;
+  }
+  
+  .carousel-container {
+    width: 100%;
+  }
+  
+  .rating-section {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
   }
 }
   </style>
@@ -703,9 +728,7 @@ body {
     
     <div class="dish-image-container">
       <div class="dish-image">
-        <img id="main-dish-image" src="https://img.freepik.com/free-photo/top-view-indonesian-food-arrangement_23-2148935349.jpg?size=626&ext=jpg" alt="Lotek Perkedel" 
-
-/>
+        <img id="main-dish-image" src="https://img.freepik.com/free-photo/top-view-indonesian-food-arrangement_23-2148935349.jpg?size=626&ext=jpg" alt="Lotek Perkedel" />
       </div>
     </div>
     
@@ -714,35 +737,9 @@ body {
         <h2 id="dish-tagline">#1 Most Popular Indonesian Dish</h2>
         <h1 id="main-dish-name"><span class="line-1">LOTEK</span><br><span class="line-2" style="font-weight: 900;">PERKEDEL</span></h1>
         <div class="actions">
-          <button id="play-video"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Watch</button>
-          <button id="order-food"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path 
-
-d="M16 10a4 4 0 0 1-8 0"></path></svg> Order Now</button>
+          <button id="play-video"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Watch</button>
+          <button id="order-food"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> Order Now</button>
         </div>
-      </div>
-    </div>
-    
-    <div class="rating-section">
-      <div class="rating">4.9</div>
-      <div class="chef-name" id="chef-name">Chef Feny</div>
-      <div id="main-dish-description" class="description">
-        Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.
-      </div>
-      <div class="thumbs">
-        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
-
-1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
-        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38-9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 
-
-1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
       </div>
     </div>
     
@@ -752,6 +749,18 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
         <!-- Items will be populated by JavaScript -->
       </div>
       <button class="carousel-arrow right" id="carousel-right">›</button>
+    </div>
+    
+    <div class="rating-section">
+      <div class="rating">4.9</div>
+      <div class="chef-name" id="chef-name">Chef Feny</div>
+      <div id="main-dish-description" class="description">
+        Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.
+      </div>
+      <div class="thumbs">
+        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
+        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
+      </div>
     </div>
   </div>
   
@@ -927,12 +936,12 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
     
     carousel.addEventListener('touchstart', (e) => {
       carouselTouchStartX = e.changedTouches[0].screenX;
-    });
+    }, { passive: true });
     
     carousel.addEventListener('touchend', (e) => {
       carouselTouchEndX = e.changedTouches[0].screenX;
       handleCarouselSwipe();
-    });
+    }, { passive: true });
     
     function handleCarouselSwipe() {
       const swipeDistance = carouselTouchStartX - carouselTouchEndX;
@@ -949,12 +958,12 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
     
     categoryList.addEventListener('touchstart', (e) => {
       categoryTouchStartX = e.changedTouches[0].screenX;
-    });
+    }, { passive: true });
     
     categoryList.addEventListener('touchend', (e) => {
       categoryTouchEndX = e.changedTouches[0].screenX;
       handleCategorySwipe();
-    });
+    }, { passive: true });
     
     function handleCategorySwipe() {
       const swipeDistance = categoryTouchStartX - categoryTouchEndX;
@@ -1017,11 +1026,7 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
         mainDishDescription.textContent = dish.description;
         chefName.textContent = dish.chef;
         dishTagline.textContent = dish.tagline;
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
-
-1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
         
         // Remove transition classes
         mainDishImage.parentElement.classList.remove('changing');
@@ -1081,11 +1086,7 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4
     likeButton.addEventListener('click', () => {
       const dish = filteredDishes[currentDishIndex];
       dish.likes++;
-      likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
-
-1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
+      likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
       likeButton.style.color = 'var(--primary-color)';
       setTimeout(() => {
         likeButton.style.color = '';
