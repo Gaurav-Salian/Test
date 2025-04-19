@@ -48,6 +48,106 @@
       margin: 0 auto;
       padding: 1rem;
       position: relative;
+      isolation: isolate;
+    }
+    
+    /* Category Section Styling */
+    .category-section {
+      grid-column: 1 / -1;
+      width: 100%;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .category-section h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .category-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50%;
+      height: 3px;
+      background-color: var(--primary-color);
+      border-radius: 2px;
+    }
+    
+    .category-list {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 0.5rem 0;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    
+    .category-list::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .category-item {
+      background: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    
+    .category-item:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
+    }
+    
+    .category-item.active {
+      background: var(--primary-color);
+      color: white;
+      font-weight: 600;
+    }
+    
+    .category-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: var(--transition);
+      z-index: 10;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .category-arrow:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-50%) scale(1.1);
+    }
+    
+    .category-arrow.left {
+      left: -0.5rem;
+    }
+    
+    .category-arrow.right {
+      right: -0.5rem;
     }
     
     /* Hero Section Styling */
@@ -57,6 +157,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      contain: layout;
     }
     
     .dish-image {
@@ -66,27 +167,30 @@
       border-radius: 50%;
       overflow: hidden;
       box-shadow: var(--card-shadow);
-      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.3s ease;
+      will-change: transform;
+      contain: layout;
     }
     
-    .dish-image:hover {
+    .dish-image:hover:not(.changing):not(.entering) {
       transform: scale(1.05);
+      transition-delay: 0.1s;
     }
     
     .dish-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: var(--transition);
+      transition: none;
     }
     
-    @keyframes rollOutLeft {
+    @keyframes fallDown {
       0% {
-        transform: translateX(0) rotate(0deg);
+        transform: translateY(0);
         opacity: 1;
       }
       100% {
-        transform: translateX(-100%) rotate(-15deg);
+        transform: translateY(100%);
         opacity: 0;
       }
     }
@@ -103,11 +207,15 @@
     }
     
     .dish-image.changing {
-      animation: rollOutLeft 0.5s ease forwards;
+      animation: fallDown 0.5s ease forwards;
     }
     
     .dish-image.entering {
       animation: rollInTop 0.5s ease forwards;
+    }
+    
+    .dish-image:not(.changing):not(.entering) {
+      transform: translateY(0);
     }
     
     /* Info Section Styling */
@@ -131,13 +239,53 @@
       font-size: 2.8rem;
       font-weight: 900;
       line-height: 1.2;
-      transition: opacity 0.5s ease, transform 0.5s ease;
       margin-bottom: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
     }
     
-    .info-section h1.changing {
-      opacity: 0;
-      transform: translateY(20px);
+    .info-section h1 .line-1,
+    .info-section h1 .line-2 {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .info-section h1 .line-1.changing {
+      animation: hideRight 0.5s ease forwards;
+    }
+    
+    .info-section h1 .line-1.entering {
+      animation: revealLeft 0.5s ease forwards;
+    }
+    
+    .info-section h1 .line-2.changing {
+      animation: hideLeft 0.5s ease forwards;
+    }
+    
+    .info-section h1 .line-2.entering {
+      animation: revealRight 0.5s ease forwards;
+    }
+    
+    @keyframes revealLeft {
+      0% { clip-path: inset(0 100% 0 0); }
+      100% { clip-path: inset(0 0 0 0); }
+    }
+    
+    @keyframes hideRight {
+      0% { clip-path: inset(0 0 0 0); }
+      100% { clip-path: inset(0 100% 0 0); }
+    }
+    
+    @keyframes revealRight {
+      0% { clip-path: inset(0 0 0 100%); }
+      100% { clip-path: inset(0 0 0 0); }
+    }
+    
+    @keyframes hideLeft {
+      0% { clip-path: inset(0 0 0 0); }
+      100% { clip-path: inset(0 0 0 100%); }
     }
     
     .actions {
@@ -187,12 +335,15 @@
       box-shadow: var(--card-shadow);
       width: 100%;
       transition: var(--transition);
-      animation: float 4s ease-in-out infinite;
+      position: relative;
+      contain: layout;
+      animation: float 3s ease-in-out infinite;
+      will-change: transform;
     }
     
     @keyframes float {
       0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-5px); }
       100% { transform: translateY(0); }
     }
     
@@ -206,7 +357,7 @@
     }
     
     .rating::after {
-      content: "?????";
+      content: "⭐⭐⭐⭐⭐";
       font-size: 1.2rem;
       letter-spacing: 2px;
     }
@@ -349,63 +500,6 @@
       right: -0.5rem;
     }
     
-    /* Category Section Styling */
-    .category-section {
-      grid-column: 1 / 3;
-      width: 100%;
-      margin-top: 2rem;
-    }
-    
-    .category-section h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .category-section h3::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 50%;
-      height: 3px;
-      background-color: var(--primary-color);
-      border-radius: 2px;
-    }
-    
-    .category-list {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 0.5rem;
-    }
-    
-    .category-item {
-      background: white;
-      padding: 0.6rem 1.2rem;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-      transition: var(--transition);
-    }
-    
-    .category-item:hover {
-      background: var(--primary-color);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
-    }
-    
-    .category-item.active {
-      background: var(--primary-color);
-      color: white;
-      font-weight: 600;
-    }
-    
     /* Utility Classes */
     .loader {
       width: 100%;
@@ -435,7 +529,6 @@
     }
     
     /* Responsive Design */
-    /* Small Mobile (up to 480px) */
     @media (max-width: 480px) {
       body {
         padding: 0.5rem;
@@ -445,6 +538,30 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
         padding: 0.5rem;
+	max-width: 100vw;
+      }
+      
+      .category-section {
+        margin-bottom: 1.5rem;
+      }
+      
+      .category-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+      
+      .category-arrow {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1rem;
+      }
+      
+      .category-arrow.left {
+        left: 0;
+      }
+      
+      .category-arrow.right {
+        right: 0;
       }
       
       .dish-image {
@@ -461,6 +578,13 @@
       
       .actions {
         justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .actions button {
+        width: 100%;
+        max-width: 15rem;
       }
       
       .rating-section {
@@ -488,21 +612,24 @@
         font-size: 1rem;
       }
       
-      .category-section {
-        grid-column: 1;
+      .carousel-arrow.left {
+        left: 0;
       }
       
-      .category-item {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
+      .carousel-arrow.right {
+        right: 0;
       }
     }
     
-    /* Mobile (481px to 768px) */
     @media (min-width: 481px) and (max-width: 768px) {
       .container {
         grid-template-columns: 1fr;
         gap: 2rem;
+	max-width: 100vw;
+      }
+      
+      .category-section {
+        grid-column: 1;
       }
       
       .dish-image-container {
@@ -529,47 +656,63 @@
       .carousel-container {
         grid-column: 1;
       }
-      
-      .category-section {
-        grid-column: 1;
-      }
     }
     
-    /* Tablet (769px to 1024px) */
     @media (min-width: 769px) and (max-width: 1024px) {
       .container {
         grid-template-columns: 1fr 1.5fr;
         gap: 2rem;
+	max-width: 100vw;
+      }
+      
+      .category-section {
+        grid-column: 1 / 3;
+        grid-row: 1;
       }
       
       .rating-section {
         grid-column: 1 / 3;
-        grid-row: 2;
+        grid-row: 3;
         width: 100%;
       }
       
       .carousel-container {
         grid-column: 1 / 3;
-        grid-row: 3;
-      }
-      
-      .category-section {
-        grid-column: 1 / 3;
         grid-row: 4;
       }
     }
     
-    /* Large Tablet to Desktop (1025px to 1200px) */
     @media (min-width: 1025px) and (max-width: 1200px) {
       .container {
         gap: 1.5rem;
         padding: 0 1rem;
+	max-width: 100vw;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="category-section">
+      <h3>Categories</h3>
+      <div class="category-list" id="category-list">
+        <div class="category-item active" data-category="all">All</div>
+        <div class="category-item" data-category="breakfast">Breakfast</div>
+        <div class="category-item" data-category="lunch">Lunch</div>
+        <div class="category-item" data-category="dinner">Dinner</div>
+        <div class="category-item" data-category="beverages">Beverages</div>
+        <div class="category-item" data-category="desserts">Desserts</div>
+        <div class="category-item" data-category="appetizers">Appetizers</div>
+        <div class="category-item" data-category="soups">Soups</div>
+        <div class="category-item" data-category="salads">Salads</div>
+        <div class="category-item" data-category="snacks">Snacks</div>
+        <div class="category-item" data-category="vegetarian">Vegetarian</div>
+        <div class="category-item" data-category="seafood">Seafood</div>
+      </div>
+      <button class="category-arrow left" id="category-left">‹</button>
+      <button class="category-arrow right" id="category-right">›</button>
+    </div>
+    
     <div class="dish-image-container">
       <div class="dish-image">
         <img id="main-dish-image" src="https://img.freepik.com/free-photo/top-view-indonesian-food-arrangement_23-2148935349.jpg?size=626&ext=jpg" alt="Lotek Perkedel" 
@@ -581,7 +724,7 @@
     <div class="info-section">
       <div>
         <h2 id="dish-tagline">#1 Most Popular Indonesian Dish</h2>
-        <h1 id="main-dish-name">LOTEK <br><span style="font-weight: 900;">PERKEDEL</span></h1>
+        <h1 id="main-dish-name"><span class="line-1">LOTEK</span><br><span class="line-2" style="font-weight: 900;">PERKEDEL</span></h1>
         <div class="actions">
           <button id="play-video"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
 
@@ -609,7 +752,7 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4
 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
         <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
 
-stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 
+stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38-9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 
 
 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
       </div>
@@ -621,18 +764,6 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
         <!-- Items will be populated by JavaScript -->
       </div>
       <button class="carousel-arrow right" id="carousel-right">›</button>
-    </div>
-    
-    <div class="category-section">
-      <h3>Categories</h3>
-      <div class="category-list" id="category-list">
-        <div class="category-item active" data-category="all">All</div>
-        <div class="category-item" data-category="breakfast">Breakfast</div>
-        <div class="category-item" data-category="lunch">Lunch</div>
-        <div class="category-item" data-category="dinner">Dinner</div>
-        <div class="category-item" data-category="beverages">Beverages</div>
-        <div class="category-item" data-category="desserts">Desserts</div>
-      </div>
     </div>
   </div>
   
@@ -692,7 +823,7 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
         name: "Soto Ayam",
         image: "https://img.freepik.com/free-photo/delicious-indonesian-food-arrangement_23-2148935331.jpg?size=626&ext=jpg",
         description: "Hearty chicken soup with turmeric broth, rice noodles and fresh herbs, garnished with fried shallots.",
-        category: "lunch",
+        category: "soups",
         chef: "Chef Sari",
         rating: "4.8",
         likes: 85,
@@ -702,7 +833,7 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
         name: "Gado-Gado",
         image: "https://img.freepik.com/free-photo/gado-gado-traditional-indonesian-salad-dish-served-with-peanut-sauce_1150-42979.jpg?size=626&ext=jpg",
         description: "Mixed vegetables with rich peanut sauce, boiled eggs and crispy crackers. A healthy vegetarian option.",
-        category: "lunch",
+        category: "salads",
         chef: "Chef Dewi",
         rating: "4.6",
         likes: 78,
@@ -722,7 +853,7 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
         name: "Bakso",
         image: "https://img.freepik.com/free-photo/bakso-meatball-soup-served-with-noodles-ready-eat_450066-966.jpg?size=626&ext=jpg",
         description: "Beef meatball soup with noodles, fresh greens, crispy wontons and aromatic broth. A street food classic.",
-        category: "dinner",
+        category: "soups",
         chef: "Chef Bambang",
         rating: "4.7",
         likes: 84,
@@ -732,7 +863,7 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
         name: "Sate Ayam",
         image: "https://img.freepik.com/free-photo/chicken-skewers-with-slices-sweet-peppers-dill_2829-18813.jpg?size=626&ext=jpg",
         description: "Grilled chicken skewers with rich peanut sauce and rice cakes. Indonesia's most famous street food.",
-        category: "dinner",
+        category: "appetizers",
         chef: "Chef Putra",
         rating: "4.8",
         likes: 91,
@@ -774,12 +905,14 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
     const orderFood = document.getElementById('order-food');
     const carouselLeft = document.getElementById('carousel-left');
     const carouselRight = document.getElementById('carousel-right');
+    const categoryLeft = document.getElementById('category-left');
+    const categoryRight = document.getElementById('category-right');
 
     // Enhanced functionality
     let currentDishIndex = 0;
     let filteredDishes = [...dishes];
 
-    // Scroll carousel by button clicks or swipe
+    // Scroll functions
     function scrollCarousel(amount) {
       carousel.scrollBy({
         left: amount,
@@ -787,159 +920,200 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
       });
     }
 
-    // Event listeners for carousel navigation
+    function scrollCategory(amount) {
+      categoryList.scrollBy({
+        left: amount,
+        behavior: 'smooth'
+      });
+    }
+
+    // Event listeners for navigation
     carouselLeft.addEventListener('click', () => scrollCarousel(-300));
     carouselRight.addEventListener('click', () => scrollCarousel(300));
+    categoryLeft.addEventListener('click', () => scrollCategory(-200));
+    categoryRight.addEventListener('click', () => scrollCategory(200));
 
-    // Touch events for mobile swiping
-    let touchStartX = 0;
-    let touchEndX = 0;
+    // Touch events for carousel
+    let carouselTouchStartX = 0;
+    let carouselTouchEndX = 0;
     
     carousel.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
+      carouselTouchStartX = e.changedTouches[0].screenX;
     });
     
     carousel.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
+      carouselTouchEndX = e.changedTouches[0].screenX;
+      handleCarouselSwipe();
     });
     
-    function handleSwipe() {
-      const swipeDistance = touchStartX - touchEndX;
+    function handleCarouselSwipe() {
+      const swipeDistance = carouselTouchStartX - carouselTouchEndX;
       if (swipeDistance > 50) {
-        // Swiped left
         scrollCarousel(300);
       } else if (swipeDistance < -50) {
-        // Swiped right
         scrollCarousel(-300);
       }
     }
 
-   // Render carousel items
-function renderCarousel(category = 'all') {
-  carousel.innerHTML = '';
-  
-  filteredDishes = category === 'all' 
-    ? dishes 
-    : dishes.filter(dish => dish.category === category);
-  
-  filteredDishes.forEach((dish, index) => {
-    const item = document.createElement('div');
-    item.className = 'carousel-item';
-    if (index === currentDishIndex) {
-      item.classList.add('active');
-    }
+    // Touch events for category list
+    let categoryTouchStartX = 0;
+    let categoryTouchEndX = 0;
     
-    item.innerHTML = `
-      <img src="${dish.image}" alt="${dish.name}" />
-      <div class="item-name">${dish.name}</div>
-    `;
-    
-    item.addEventListener('click', () => {
-      changeDish(index);
+    categoryList.addEventListener('touchstart', (e) => {
+      categoryTouchStartX = e.changedTouches[0].screenX;
     });
     
-    carousel.appendChild(item);
-  });
-}
+    categoryList.addEventListener('touchend', (e) => {
+      categoryTouchEndX = e.changedTouches[0].screenX;
+      handleCategorySwipe();
+    });
+    
+    function handleCategorySwipe() {
+      const swipeDistance = categoryTouchStartX - categoryTouchEndX;
+      if (swipeDistance > 50) {
+        scrollCategory(200);
+      } else if (swipeDistance < -50) {
+        scrollCategory(-200);
+      }
+    }
 
-// Change the main dish display
-function changeDish(index) {
-  if (index === currentDishIndex) return;
-  
-  // Add transition classes
-  mainDishImage.parentElement.classList.add('changing');
-  mainDishName.classList.add('changing');
-  mainDishDescription.classList.add('changing');
-  
-  // Update after animation
-  setTimeout(() => {
-    const dish = filteredDishes[index];
-    mainDishImage.src = dish.image;
-    mainDishName.innerHTML = dish.name.toUpperCase().split(' ').join('<br><span style="font-weight: 900;">') + '</span>';
-    mainDishDescription.textContent = dish.description;
-    chefName.textContent = dish.chef;
-    dishTagline.textContent = dish.tagline;
-    likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+    // Render carousel items
+    function renderCarousel(category = 'all') {
+      carousel.innerHTML = '';
+      
+      filteredDishes = category === 'all' 
+        ? dishes 
+        : dishes.filter(dish => dish.category === category);
+      
+      filteredDishes.forEach((dish, index) => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        if (index === currentDishIndex) {
+          item.classList.add('active');
+        }
+        
+        item.innerHTML = `
+          <img src="${dish.image}" alt="${dish.name}" />
+          <div class="item-name">${dish.name}</div>
+        `;
+        
+        item.addEventListener('click', () => {
+          changeDish(index);
+        });
+        
+        carousel.appendChild(item);
+      });
+      
+      // Reset carousel scroll position
+      carousel.scrollLeft = 0;
+    }
+
+    // Change the main dish display
+    function changeDish(index) {
+      if (index === currentDishIndex) return;
+      
+      // Add transition classes
+      mainDishImage.parentElement.classList.add('changing');
+      mainDishName.querySelector('.line-1').classList.add('changing');
+      mainDishName.querySelector('.line-2').classList.add('changing');
+      mainDishDescription.classList.add('changing');
+      
+      // Update after animation
+      setTimeout(() => {
+        const dish = filteredDishes[index];
+        mainDishImage.src = dish.image;
+        const nameParts = dish.name.toUpperCase().split(' ');
+        const line1 = nameParts[0];
+        const line2 = nameParts.slice(1).join(' ');
+        mainDishName.innerHTML = `<span class="line-1">${line1}</span><br><span class="line-2" style="font-weight: 900;">${line2}</span>`;
+        mainDishDescription.textContent = dish.description;
+        chefName.textContent = dish.chef;
+        dishTagline.textContent = dish.tagline;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
 
 stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
 
 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
-    
-    // Remove transition classes
-    mainDishImage.parentElement.classList.remove('changing');
-    mainDishName.classList.remove('changing');
-    mainDishDescription.classList.remove('changing');
-    
-    // Add entering animation
-    mainDishImage.parentElement.classList.add('entering');
-    
-    setTimeout(() => {
-      mainDishImage.parentElement.classList.remove('entering');
-    }, 500);
-    
-    // Update active carousel item
-    document.querySelectorAll('.carousel-item').forEach((item, i) => {
-      if (i === index) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
+        
+        // Remove transition classes
+        mainDishImage.parentElement.classList.remove('changing');
+        mainDishDescription.classList.remove('changing');
+        
+        // Add entering animation
+        mainDishImage.parentElement.classList.add('entering');
+        mainDishName.querySelector('.line-1').classList.add('entering');
+        mainDishName.querySelector('.line-2').classList.add('entering');
+        
+        // Explicitly reset transform and clip-path after animation
+        setTimeout(() => {
+          mainDishImage.parentElement.classList.remove('entering');
+          mainDishImage.parentElement.style.transform = 'translateY(0)';
+          mainDishName.querySelector('.line-1').classList.remove('entering');
+          mainDishName.querySelector('.line-2').classList.remove('entering');
+          mainDishName.querySelector('.line-1').style.clipPath = 'inset(0 0 0 0)';
+          mainDishName.querySelector('.line-2').style.clipPath = 'inset(0 0 0 0)';
+        }, 600);
+        
+        // Update active carousel item
+        document.querySelectorAll('.carousel-item').forEach((item, i) => {
+          if (i === index) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+        
+        currentDishIndex = index;
+      }, 500);
+    }
+
+    // Filter dishes by category
+    function filterDishes(category) {
+      document.querySelectorAll('.category-item').forEach(item => {
+        if (item.dataset.category === category) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+      
+      currentDishIndex = 0;
+      renderCarousel(category);
+      changeDish(0);
+    }
+
+    // Event listeners for category filtering
+    categoryList.addEventListener('click', (e) => {
+      if (e.target.classList.contains('category-item')) {
+        filterDishes(e.target.dataset.category);
       }
     });
-    
-    currentDishIndex = index;
-  }, 300);
-}
 
-// Filter dishes by category
-function filterDishes(category) {
-  document.querySelectorAll('.category-item').forEach(item => {
-    if (item.dataset.category === category) {
-      item.classList.add('active');
-    } else {
-      item.classList.remove('active');
-    }
-  });
-  
-  currentDishIndex = 0;
-  renderCarousel(category);
-  changeDish(0);
-}
-
-// Event listeners for category filtering
-categoryList.addEventListener('click', (e) => {
-  if (e.target.classList.contains('category-item')) {
-    filterDishes(e.target.dataset.category);
-  }
-});
-
-// Interactive elements
-likeButton.addEventListener('click', () => {
-  const dish = filteredDishes[currentDishIndex];
-  dish.likes++;
-  likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+    // Interactive elements
+    likeButton.addEventListener('click', () => {
+      const dish = filteredDishes[currentDishIndex];
+      dish.likes++;
+      likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
 
 stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
 
 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
-  likeButton.style.color = 'var(--primary-color)';
-  setTimeout(() => {
-    likeButton.style.color = '';
-  }, 500);
-});
+      likeButton.style.color = 'var(--primary-color)';
+      setTimeout(() => {
+        likeButton.style.color = '';
+      }, 500);
+    });
 
-playVideo.addEventListener('click', () => {
-  alert('Video playback feature coming soon!');
-});
+    playVideo.addEventListener('click', () => {
+      alert('Video playback feature coming soon!');
+    });
 
-orderFood.addEventListener('click', () => {
-  alert('Thank you for your interest! Order feature coming soon.');
-});
+    orderFood.addEventListener('click', () => {
+      alert('Thank you for your interest! Order feature coming soon.');
+    });
 
-// Initialize the page
-renderCarousel();
-
-
-</script>
+    // Initialize the page
+    renderCarousel();
+  </script>
 </body>
 </html>
