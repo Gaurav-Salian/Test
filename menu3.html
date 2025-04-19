@@ -6,698 +6,709 @@
   <title>Eazy Menu</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
-   :root {
-  --primary-color: #ff6600;
-  --primary-hover: #e65c00;
-  --text-color: #333;
-  --light-text: #888;
-  --background: linear-gradient(120deg, #ffffff, #f7f7f7);
-  --card-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.08);
-  --transition: all 0.3s ease;
-  --border-radius: 12px;
-  --container-width: 1200px;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
-}
-
-body {
-  color: var(--text-color);
-  padding: 0;
-  animation: fadeIn 1s ease-in;
-  overflow-x: hidden;
-  min-height: 100vh;
-  width: 100%;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  align-items: center;
-  max-width: var(--container-width);
-  margin: 0 auto;
-  padding: 1rem;
-  position: relative;
-  width: 100%;
-}
-
-/* Category Section Styling */
-.category-section {
-  width: 100%;
-  margin-bottom: 2rem;
-  position: relative;
-  padding: 0 1rem;
-}
-
-.category-section h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  position: relative;
-  display: inline-block;
-}
-
-.category-section h3::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 50%;
-  height: 3px;
-  background-color: var(--primary-color);
-  border-radius: 2px;
-}
-
-.category-list {
-  display: flex;
-  gap: 0.75rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 0.5rem 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  margin: 0;
-  width: 100%;
-}
-
-.category-list::-webkit-scrollbar {
-  display: none;
-}
-
-.category-item {
-  background: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 30px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-  transition: var(--transition);
-  white-space: nowrap;
-  user-select: none;
-}
-
-.category-item:hover {
-  background: var(--primary-color);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
-}
-
-.category-item.active {
-  background: var(--primary-color);
-  color: white;
-  font-weight: 600;
-}
-
-.category-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: var(--transition);
-  z-index: 10;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.category-arrow:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-50%) scale(1.1);
-}
-
-.category-arrow.left {
-  left: 0.5rem;
-}
-
-.category-arrow.right {
-  right: 0.5rem;
-}
-
-/* Hero Section Styling */
-.dish-image-container {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  contain: layout;
-}
-
-.dish-image {
-  width: 100%;
-  max-width: 30rem;
-  border-radius: 50%;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  will-change: transform;
-  contain: layout;
-}
-
-.dish-image:hover:not(.changing):not(.entering) {
-  transform: scale(1.05);
-  transition-delay: 0.1s;
-}
-
-.dish-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: none;
-}
-
-@keyframes rollOutRight {
-  0% {
-    transform: translateX(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-@keyframes rollInLeft {
-  0% {
-    transform: translateX(-100%) rotate(-360deg);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-.dish-image.changing {
-  animation: rollOutRight 0.5s ease forwards;
-}
-
-.dish-image.entering {
-  animation: rollInLeft 0.5s ease forwards;
-}
-
-.dish-image:not(.changing):not(.entering) {
-  transform: translateX(0) rotate(0deg);
-}
-
-/* Info Section Styling */
-.info-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-  text-align: center;
-}
-
-.info-section h2 {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--light-text);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: opacity 0.5s ease;
-}
-
-.info-section h1 {
-  font-size: 2.8rem;
-  font-weight: 900;
-  line-height: 1.2;
-  margin-bottom: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  justify-content: center;
-}
-
-.info-section h1 .line-1,
-.info-section h1 .line-2 {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-}
-
-.info-section h1 .line-1.changing {
-  animation: hideRight 0.5s ease forwards;
-}
-
-.info-section h1 .line-1.entering {
-  animation: revealLeft 0.5s ease forwards;
-}
-
-.info-section h1 .line-2.changing {
-  animation: hideLeft 0.5s ease forwards;
-}
-
-.info-section h1 .line-2.entering {
-  animation: revealRight 0.5s ease forwards;
-}
-
-@keyframes revealLeft {
-  0% { clip-path: inset(0 100% 0 0); }
-  100% { clip-path: inset(0 0 0 0); }
-}
-
-@keyframes hideRight {
-  0% { clip-path: inset(0 0 0 0); }
-  100% { clip-path: inset(0 100% 0 0); }
-}
-
-@keyframes revealRight {
-  0% { clip-path: inset(0 0 0 100%); }
-  100% { clip-path: inset(0 0 0 0); }
-}
-
-@keyframes hideLeft {
-  0% { clip-path: inset(0 0 0 0); }
-  100% { clip-path: inset(0 0 0 100%); }
-}
-
-.actions {
-  margin: 1.5rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.actions button {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 1rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.actions button:first-child {
-  background-color: white;
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
-}
-
-.actions button:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
-}
-
-.actions button:first-child:hover {
-  background-color: rgba(255, 102, 0, 0.1);
-  color: var(--primary-hover);
-}
-
-/* Pricing Section Styling */
-.pricing-section {
-  background: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
-  width: 100%;
-  transition: var(--transition);
-  position: relative;
-  contain: layout;
-  animation: float 3s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
-}
-
-.price {
-  font-size: 2.2rem;
-  color: var(--primary-color);
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.price::before {
-  content: "₹";
-  font-size: 1.5rem;
-}
-
-.chef-name {
-  font-weight: 600;
-  margin-top: 0.5rem;
-  font-size: 1.1rem;
-  transition: opacity 0.5s ease;
-}
-
-.description {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin-top: 1rem;
-  color: #666;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.description.changing {
-  opacity: 0;
-  transform: translateX(20px);
-}
-
-.thumbs {
-  margin-top: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.thumbs span {
-  cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: var(--transition);
-}
-
-.thumbs span:hover {
-  color: var(--primary-color);
-  transform: scale(1.05);
-}
-
-/* Carousel Styling */
-.carousel-container {
-  position: relative;
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0 1.5rem;
-}
-
-.carousel {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 1rem 0.5rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  width: 100%;
-  position: relative;
-  touch-action: pan-x;
-}
-
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.carousel-item {
-  min-width: 8rem;
-  background: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
-  text-align: center;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.carousel-item img {
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #f0f0f0;
-  transition: var(--transition);
-  margin-bottom: 0.5rem;
-}
-
-.carousel-item:hover {
-  transform: scale(1.05);
-}
-
-.carousel-item:hover img {
-  border-color: var(--primary-color);
-}
-
-.carousel-item.active img {
-  border-color: var(--primary-color);
-  transform: scale(1.1);
-}
-
-.carousel-item .item-name {
-  margin-top: 0.5rem;
-  font-weight: 500;
-  white-space: normal;
-  line-height: 1.4;
-}
-
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  color: var(--primary-color);
-  border: none;
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.4rem;
-  transition: var(--transition);
-  z-index: 10;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-}
-
-.carousel-arrow:hover {
-  background-color: rgba(255, 102, 0, 0.1);
-  color: var(--primary-hover);
-  transform: translateY(-50%) scale(1.1);
-}
-
-.carousel-arrow.left {
-  left: 0;
-}
-
-.carousel-arrow.right {
-  right: 0;
-}
-
-/* Utility Classes */
-.loader {
-  width: 100%;
-  height: 4px;
-  background: #f0f0f0;
-  overflow: hidden;
-  position: relative;
-  border-radius: 2px;
-  margin: 1rem 0;
-}
-
-.loader::after {
-  content: '';
-  width: 40%;
-  height: 100%;
-  background: var(--primary-color);
-  position: absolute;
-  top: 0;
-  left: -40%;
-  animation: loading 1.5s ease infinite;
-  border-radius: 2px;
-}
-
-@keyframes loading {
-  0% { left: -40%; }
-  100% { left: 100%; }
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-  .container {
-    gap: 1rem;
-    padding: 0.5rem;
-    width: 100%;
-    overflow-x: hidden;
-  }
-  
-  .category-section {
-    margin-bottom: 1rem;
-    padding: 0 1.5rem;
-  }
-  
-  .category-item {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-  }
-  
-  .category-arrow {
-    display: none;
-  }
-  
-  .dish-image {
-    max-width: 30rem;
-  }
-  
-  .info-section {
-    text-align: center;
-    padding: 0 0.5rem;
-  }
-  
-  .info-section h1 {
-    font-size: 1.8rem;
-  }
-  
-  .actions {
-    display: none;
-  }
-  
-  .pricing-section {
-    padding: 1rem;
-    margin: 1rem 0;
-  }
-  
-  .carousel-container {
-    padding: 0;
-    margin-top: 0.5rem;
-  }
-  
-  .carousel {
-    padding: 0.5rem 0;
-  }
-  
-  .carousel-item {
-    min-width: 7rem;
-    padding: 0.75rem;
-  }
-  
-  .carousel-item img {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
-  
-  .carousel-item .item-name {
-    font-size: 0.75rem;
-  }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-  .container {
-    gap: 1.5rem;
-    width: 100%;
-    overflow-x: hidden;
-  }
-  
-  .info-section {
-    text-align: center;
-    padding: 0 1rem;
-  }
-  
-  .info-section h1 {
-    font-size: 2.2rem;
-  }
-  
-  .actions {
-    justify-content: center;
-  }
-  
-  .carousel-container {
-    padding: 0 1.5rem;
-  }
-  
-  .category-section {
-    padding: 0 1.5rem;
-  }
-  
-  .carousel-item {
-    min-width: 7.5rem;
-  }
-  
-  .carousel-item img {
-    width: 4rem;
-    height: 4rem;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .container {
-    gap: 1.5rem;
-    width: 100%;
-    overflow-x: hidden;
-    padding: 1rem;
-  }
-  
-  .category-section {
-    padding: 0;
-  }
-  
-  .carousel-item {
-    min-width: 8rem;
-  }
-}
-
-@media (min-width: 1025px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    align-items: center;
-    padding: 1rem;
-    width: 100%;
-    overflow-x: hidden;
-  }
-  
-  .category-section {
-    width: 100%;
-  }
-  
-  .dish-image-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .info-section {
-    width: 100%;
-  }
-  
-  .carousel-container {
-    width: 100%;
-  }
-  
-  .pricing-section {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-}
+    :root {
+      --primary-color: #ff6600;
+      --primary-hover: #e65c00;
+      --text-color: #333;
+      --light-text: #888;
+      --background: linear-gradient(120deg, #ffffff, #f7f7f7);
+      --card-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.08);
+      --transition: all 0.3s ease;
+      --border-radius: 12px;
+      --container-width: 1200px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      color: var(--text-color);
+      padding: 0;
+      animation: fadeIn 1s ease-in;
+      overflow-x: hidden;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 1rem;
+      position: relative;
+      width: 100%;
+    }
+
+    /* Category Section Styling */
+    .category-section {
+      width: 100%;
+      margin-bottom: 2rem;
+      position: relative;
+      padding: 0 1rem;
+    }
+
+    .category-section h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .category-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50%;
+      height: 3px;
+      background-color: var(--primary-color);
+      border-radius: 2px;
+    }
+
+    .category-list {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 0.5rem 0;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin: 0;
+      width: 100%;
+    }
+
+    .category-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-item {
+      background: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      transition: var(--transition);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .category-item:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
+    }
+
+    .category-item.active {
+      background: var(--primary-color);
+      color: white;
+      font-weight: 600;
+    }
+
+    .category-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: var(--transition);
+      z-index: 10;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .category-arrow:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .category-arrow.left {
+      left: 0.5rem;
+    }
+
+    .category-arrow.right {
+      right: 0.5rem;
+    }
+
+    /* Hero Section Styling */
+    .dish-image-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      contain: layout;
+    }
+
+    .dish-image {
+      width: 100%;
+      max-width: 30rem;
+      border-radius: 50%;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      will-change: transform;
+      contain: layout;
+    }
+
+    .dish-image:hover:not(.changing):not(.entering) {
+      transform: scale(1.05);
+      transition-delay: 0.1s;
+    }
+
+    .dish-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: none;
+    }
+
+    @keyframes rollOutRight {
+      0% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(100%) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes rollInLeft {
+      0% {
+        transform: translateX(-100%) rotate(-360deg);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    .dish-image.changing {
+      animation: rollOutRight 0.5s ease forwards;
+    }
+
+    .dish-image.entering {
+      animation: rollInLeft 0.5s ease forwards;
+    }
+
+    .dish-image:not(.changing):not(.entering) {
+      transform: translateX(0) rotate(0deg);
+    }
+
+    /* Info Section Styling */
+    .info-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .info-section h2 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--light-text);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: opacity 0.5s ease;
+    }
+
+    .info-section h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      justify-content: center;
+    }
+
+    .info-section h1 .line-1,
+    .info-section h1 .line-2 {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-section h1 .line-1.changing {
+      animation: hideRight 0.5s ease forwards;
+    }
+
+    .info-section h1 .line-1.entering {
+      animation: revealLeft 0.5s ease forwards;
+    }
+
+    .info-section h1 .line-2.changing {
+      animation: hideLeft 0.5s ease forwards;
+    }
+
+    .info-section h1 .line-2.entering {
+      animation: revealRight 0.5s ease forwards;
+    }
+
+    @keyframes revealLeft {
+      0% { clip-path: inset(0 100% 0 0); }
+      100% { clip-path: inset(0 0 0 0); }
+    }
+
+    @keyframes hideRight {
+      0% { clip-path: inset(0 0 0 0); }
+      100% { clip-path: inset(0 100% 0 0); }
+    }
+
+    @keyframes revealRight {
+      0% { clip-path: inset(0 0 0 100%); }
+      100% { clip-path: inset(0 0 0 0); }
+    }
+
+    @keyframes hideLeft {
+      0% { clip-path: inset(0 0 0 0); }
+      100% { clip-path: inset(0 0 0 100%); }
+    }
+
+    .actions {
+      margin: 1.5rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .actions button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .actions button:first-child {
+      background-color: white;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+    }
+
+    .actions button:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
+    }
+
+    .actions button:first-child:hover {
+      background-color: rgba(255, 102, 0, 0.1);
+      color: var(--primary-hover);
+    }
+
+    /* Pricing Section Styling */
+    .pricing-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      width: 100%;
+      transition: var(--transition);
+      position: relative;
+      contain: layout;
+      animation: float 3s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+
+    .price {
+      font-size: 2.2rem;
+      color: var(--primary-color);
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .price::before {
+      content: "₹";
+      font-size: 1.5rem;
+    }
+
+    .chef-name {
+      font-weight: 600;
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      transition: opacity 0.5s ease;
+    }
+
+    .description {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-top: 1rem;
+      color: #666;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .description.changing {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    .thumbs {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .thumbs span {
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .thumbs span:hover {
+      color: var(--primary-color);
+      transform: scale(1.05);
+    }
+
+    /* Carousel Styling */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0 1.5rem;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .carousel {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      overflow-x: scroll;
+      padding: 1rem 0.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      width: 100%;
+      position: relative;
+      touch-action: pan-x;
+      scroll-snap-type: none;
+      overscroll-behavior-x: contain;
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-item {
+      min-width: 8rem;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      scroll-snap-align: none;
+      flex-shrink: 0;
+    }
+
+    .carousel-item img {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #f0f0f0;
+      transition: var(--transition);
+      margin-bottom: 0.5rem;
+    }
+
+    .carousel-item:hover {
+      transform: scale(1.05);
+    }
+
+    .carousel-item:hover img {
+      border-color: var(--primary-color);
+    }
+
+    .carousel-item.active img {
+      border-color: var(--primary-color);
+      transform: scale(1.1);
+    }
+
+    .carousel-item .item-name {
+      margin-top: 0.5rem;
+      font-weight: 500;
+      white-space: normal;
+      line-height: 1.4;
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      color: var(--primary-color);
+      border: none;
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.4rem;
+      transition: var(--transition);
+      z-index: 10;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .carousel-arrow:hover {
+      background-color: rgba(255, 102, 0, 0.1);
+      color: var(--primary-hover);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-arrow.left {
+      left: 0;
+    }
+
+    .carousel-arrow.right {
+      right: 0;
+    }
+
+    /* Utility Classes */
+    .loader {
+      width: 100%;
+      height: 4px;
+      background: #f0f0f0;
+      overflow: hidden;
+      position: relative;
+      border-radius: 2px;
+      margin: 1rem 0;
+    }
+
+    .loader::after {
+      content: '';
+      width: 40%;
+      height: 100%;
+      background: var(--primary-color);
+      position: absolute;
+      top: 0;
+      left: -40%;
+      animation: loading 1.5s ease infinite;
+      border-radius: 2px;
+    }
+
+    @keyframes loading {
+      0% { left: -40%; }
+      100% { left: 100%; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      .container {
+        gap: 1rem;
+        padding: 0.5rem;
+        width: 100%;
+        overflow-x: hidden;
+      }
+      
+      .category-section {
+        margin-bottom: 1rem;
+        padding: 0 1.5rem;
+      }
+      
+      .category-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+      
+      .category-arrow {
+        display: none;
+      }
+      
+      .dish-image {
+        max-width: 30rem;
+      }
+      
+      .info-section {
+        text-align: center;
+        padding: 0 0.5rem;
+      }
+      
+      .info-section h1 {
+        font-size: 1.8rem;
+      }
+      
+      .actions {
+        margin: 1rem 0;
+        gap: 0.75rem;
+      }
+      
+      .actions button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+      }
+      
+      .pricing-section {
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+      
+      .carousel-container {
+        padding: 0;
+        margin-top: 0.5rem;
+      }
+      
+      .carousel {
+        padding: 0.5rem 0;
+      }
+      
+      .carousel-item {
+        min-width: 7rem;
+        padding: 0.75rem;
+      }
+      
+      .carousel-item img {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+      
+      .carousel-item .item-name {
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
+      .container {
+        gap: 1.5rem;
+        width: 100%;
+        overflow-x: hidden;
+      }
+      
+      .info-section {
+        text-align: center;
+        padding: 0 1rem;
+      }
+      
+      .info-section h1 {
+        font-size: 2.2rem;
+      }
+      
+      .actions {
+        justify-content: center;
+      }
+      
+      .carousel-container {
+        padding: 0 1.5rem;
+      }
+      
+      .category-section {
+        padding: 0 1.5rem;
+      }
+      
+      .carousel-item {
+        min-width: 7.5rem;
+      }
+      
+      .carousel-item img {
+        width: 4rem;
+        height: 4rem;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .container {
+        gap: 1.5rem;
+        width: 100%;
+        overflow-x: hidden;
+        padding: 1rem;
+      }
+      
+      .category-section {
+        padding: 0;
+      }
+      
+      .carousel-item {
+        min-width: 8rem;
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        padding: 1rem;
+        width: 100%;
+        overflow-x: hidden;
+      }
+      
+      .category-section {
+        width: 100%;
+      }
+      
+      .dish-image-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      
+      .info-section {
+        width: 100%;
+      }
+      
+      .carousel-container {
+        width: 100%;
+      }
+      
+      .pricing-section {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    }
   </style>
 </head>
 <body>
@@ -733,8 +744,8 @@ body {
         <h2 id="dish-tagline">#1 Most Popular Restaurant</h2>
         <h1 id="main-dish-name"><span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span></h1>
         <div class="actions">
-          <button id="play-video"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Watch</button>
-          <button id="order-food"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> Order Now</button>
+          <button id="take-pic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg> Take a Pic</button>
+          <button id="add-to-list"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add to List</button>
         </div>
       </div>
     </div>
@@ -754,8 +765,8 @@ body {
         Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.
       </div>
       <div class="thumbs">
-        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
-        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
+        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
+        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -764,67 +775,67 @@ body {
     const dishes = [
       {
         name: "Idli",
-        image: "./images/idli.jpg",
-        description: "Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.",
+        image: "https://img.freepik.com/free-photo/south-indian-food-dosa-idli-chutney-sambar_466689-80006.jpg",
+        description: "Rava Idli is a soft, fluffy, and savory steamed cake made from semolina (rava or sooji), yogurt, and mild spices. Originating from South India, it's a light yet filling dish that's perfect for breakfast, brunch, or a wholesome snack.",
         category: "breakfast",
-        chef: "Chef Feny",
+        chef: "",
         price: 40,
-        likes: 98,
-        tagline: "#1 Most Popular Indonesian Dish"
+        likes: 0,
+        tagline: "Soft, Fluffy, and Ready in a Flash!"
       },
       {
         name: "Vada",
-        image: "./images/vada.jpg",
-        description: "Crispy fried chicken marinated in traditional spices, served hot and fresh with sambal and rice.",
+        image: "https://img.freepik.com/free-photo/indian-vada-sambar-chutney-served-banana-leaf-south-indian-breakfast_466689-98412.jpg",
+        description: "Rava Vada is a crispy, golden-fried South Indian snack made with semolina (rava/sooji), spices, and herbs. Crunchy on the outside and soft inside, these vadas are quick to prepare without any need for soaking or grinding.",
         category: "breakfast",
-        chef: "Chef Budi",
+        chef: "",
         price: 50,
-        likes: 87,
-        tagline: "Signature Crispy Delight"
+        likes: 0,
+        tagline: "The Golden Crunch of South Indian Flavor."
       },
       {
         name: "Golibaje",
-        image: "./images/golibaji.jpg",
-        description: "Sweet stuffed pancake with layers of chocolate, cheese, and condensed milk. A beloved street food dessert.",
-        category: "desserts",
-        chef: "Chef Indra",
+        image: "https://img.freepik.com/free-photo/pakora-pakoda-is-popular-indian-snack-made-from-chickpea-flour-besan-spices_466689-97193.jpg",
+        description: "Golibaje, also known as Mangalore Bajji, is a popular South Indian snack hailing from the coastal region of Karnataka. Made from a fermented batter of all-purpose flour (maida), yogurt, and spices, these golden, fluffy fritters are mildly sweet and tangy.",
+        category: "breakfast",
+        chef: "",
         price: 60,
-        likes: 92,
-        tagline: "Sweet Street Food Favorite"
+        likes: 0,
+        tagline: "A Bite of Mangalore’s Heartwarming Goodness."
       },
       {
         name: "Tea",
-        image: "./images/cha.jpg",
-        description: "Rice cake with rich vegetable curry and coconut milk sauce, perfect for breakfast or light meal.",
+        image: "https://img.freepik.com/free-photo/top-view-tea-cup-with-teapot-leaves_23-2148839293.jpg",
+        description: "Tea is more than just a beverage — it's a timeless ritual that refreshes the mind, soothes the soul, and sparks conversation. Made by steeping tea leaves, herbs, or spices in hot water, tea offers endless flavors.",
         category: "beverages",
-        chef: "Chef Nina",
+        chef: "",
         price: 20,
-        likes: 76,
+        likes: 0,
         tagline: "Traditional Morning Starter"
       },
       {
         name: "Chicken Biryani",
-        image: "./images/brni.jpg",
-        description: "Fragrant coconut rice served with fried chicken, tempeh, peanuts, and sambal. A complete meal in one plate.",
+        image: "https://img.freepik.com/free-photo/chicken-biryani-with-onions-spices_2829-11408.jpg",
+        description: "Chicken Biryani is a timeless, aromatic masterpiece where tender chicken pieces are slow-cooked with fragrant basmati rice, warm spices, and herbs. Layered with rich flavors and cooked to perfection.",
         category: "lunch",
-        chef: "Chef Wayan",
+        chef: "",
         price: 100,
-        likes: 81,
-        tagline: "Aromatic Coconut Rice Delight"
+        likes: 0,
+        tagline: "Where Spice, Rice, and Everything Nice Meet."
       },
       {
-        name: "Soto Ayam",
-        image: "https://img.freepik.com/free-photo/delicious-indonesian-food-arrangement_23-2148935331.jpg?size=626&ext=jpg",
-        description: "Hearty chicken soup with turmeric broth, rice noodles and fresh herbs, garnished with fried shallots.",
-        category: "soups",
-        chef: "Chef Sari",
+        name: "Gudbud Icecream",
+        image: "https://img.freepik.com/free-photo/ice-cream_74190-2502.jpg",
+        description: "Gudbud Ice Cream is a colorful, indulgent dessert straight from the coastal city of Mangalore. It's a joyful medley of vibrant ice cream scoops, fresh fruits, jelly, dry fruits, and nuts — all layered beautifully in a tall glass.",
+        category: "desserts",
+        chef: "",
         price: 80,
-        likes: 85,
-        tagline: "Golden Turmeric Chicken Soup"
+        likes: 0,
+        tagline: "A Festival of Flavors in Every Scoop!"
       },
       {
         name: "Gado-Gado",
-        image: "https://img.freepik.com/free-photo/gado-gado-traditional-indonesian-salad-dish-served-with-peanut-sauce_1150-42979.jpg?size=626&ext=jpg",
+        image: "https://img.freepik.com/free-photo/gado-gado-traditional-indonesian-salad-dish-served-with-peanut-sauce_1150-42979.jpg",
         description: "Mixed vegetables with rich peanut sauce, boiled eggs and crispy crackers. A healthy vegetarian option.",
         category: "salads",
         chef: "Chef Dewi",
@@ -834,7 +845,7 @@ body {
       },
       {
         name: "Rendang",
-        image: "https://img.freepik.com/free-photo/delicious-beef-rendang-cuisine-served-plate_23-2149086051.jpg?size=626&ext=jpg",
+        image: "https://img.freepik.com/free-photo/delicious-beef-rendang-cuisine-served-plate_23-2149086051.jpg",
         description: "Slow-cooked beef in rich coconut milk and complex spice sauce. Known as one of the world's most delicious dishes.",
         category: "dinner",
         chef: "Chef Agus",
@@ -844,7 +855,7 @@ body {
       },
       {
         name: "Bakso",
-        image: "https://img.freepik.com/free-photo/bakso-meatball-soup-served-with-noodles-ready-eat_450066-966.jpg?size=626&ext=jpg",
+        image: "https://img.freepik.com/free-photo/bakso-meatball-soup-served-with-noodles-ready-eat_450066-966.jpg",
         description: "Beef meatball soup with noodles, fresh greens, crispy wontons and aromatic broth. A street food classic.",
         category: "soups",
         chef: "Chef Bambang",
@@ -854,7 +865,7 @@ body {
       },
       {
         name: "Sate Ayam",
-        image: "https://img.freepik.com/free-photo/chicken-skewers-with-slices-sweet-peppers-dill_2829-18813.jpg?size=626&ext=jpg",
+        image: "https://img.freepik.com/free-photo/chicken-skewers-with-slices-sweet-peppers-dill_2829-18813.jpg",
         description: "Grilled chicken skewers with rich peanut sauce and rice cakes. Indonesia's most famous street food.",
         category: "appetizers",
         chef: "Chef Putra",
@@ -864,7 +875,7 @@ body {
       },
       {
         name: "Es Cendol",
-        image: "https://img.freepik.com/free-photo/cendol-green-rice-flour-jelly-coconut-milk-gula-melaka-palm-sugar-dessert_1339-52259.jpg?size=626&ext=jpg",
+        image: "https://img.freepik.com/free-photo/cendol-green-rice-flour-jelly-coconut-milk-gula-melaka-palm-sugar-dessert_1339-52259.jpg",
         description: "Iced dessert with coconut milk, palm sugar syrup and green rice flour jelly. Refreshing and sweet.",
         category: "beverages",
         chef: "Chef Maya",
@@ -874,7 +885,7 @@ body {
       },
       {
         name: "Kue Lapis",
-        image: "https://img.freepik.com/free-photo/kue-lapis-traditional-indonesian-layered-cake-made-with-pandan-coconut-milk_1150-45186.jpg?size=626&ext=jpg",
+        image: "https://img.freepik.com/free-photo/kue-lapis-traditional-indonesian-layered-cake-made-with-pandan-coconut-milk_1150-45186.jpg",
         description: "Layered steamed cake with vibrant colors and subtle spice flavors. A festive treat.",
         category: "desserts",
         chef: "Chef Lina",
@@ -895,17 +906,17 @@ body {
     const dishPrice = document.getElementById('dish-price');
     const likeButton = document.getElementById('like-button');
     const dislikeButton = document.getElementById('dislike-button');
-    const playVideo = document.getElementById('play-video');
-    const orderFood = document.getElementById('order-food');
+    const takePicButton = document.getElementById('take-pic');
+    const addToListButton = document.getElementById('add-to-list');
     const carouselLeft = document.getElementById('carousel-left');
     const carouselRight = document.getElementById('carousel-right');
     const categoryLeft = document.getElementById('category-left');
     const categoryRight = document.getElementById('category-right');
 
     // Enhanced functionality
-    let currentDishIndex = -1; // Set to -1 to indicate no dish is selected initially
+    let currentDishIndex = -1; // No dish selected initially
     let filteredDishes = [...dishes];
-    let lastSelectedDish = null; // Store the last selected dish object
+    let lastSelectedDish = null; // No dish selected initially
 
     // Scroll functions
     function scrollCarousel(amount) {
@@ -927,50 +938,6 @@ body {
     carouselRight.addEventListener('click', () => scrollCarousel(300));
     categoryLeft.addEventListener('click', () => scrollCategory(-200));
     categoryRight.addEventListener('click', () => scrollCategory(200));
-
-    // Touch events for carousel
-    let carouselTouchStartX = 0;
-    let carouselTouchEndX = 0;
-    
-    carousel.addEventListener('touchstart', (e) => {
-      carouselTouchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    
-    carousel.addEventListener('touchend', (e) => {
-      carouselTouchEndX = e.changedTouches[0].screenX;
-      handleCarouselSwipe();
-    }, { passive: true });
-    
-    function handleCarouselSwipe() {
-      const swipeDistance = carouselTouchStartX - carouselTouchEndX;
-      if (swipeDistance > 50) {
-        scrollCarousel(300);
-      } else if (swipeDistance < -50) {
-        scrollCarousel(-300);
-      }
-    }
-
-    // Touch events for category list
-    let categoryTouchStartX = 0;
-    let categoryTouchEndX = 0;
-    
-    categoryList.addEventListener('touchstart', (e) => {
-      categoryTouchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    
-    categoryList.addEventListener('touchend', (e) => {
-      categoryTouchEndX = e.changedTouches[0].screenX;
-      handleCategorySwipe();
-    }, { passive: true });
-    
-    function handleCategorySwipe() {
-      const swipeDistance = categoryTouchStartX - categoryTouchEndX;
-      if (swipeDistance > 50) {
-        scrollCategory(200);
-      } else if (swipeDistance < -50) {
-        scrollCategory(-200);
-      }
-    }
 
     // Render carousel items
     function renderCarousel(category = 'all') {
@@ -1006,8 +973,6 @@ body {
 
     // Change the main dish display
     function changeDish(index) {
-      if (index === currentDishIndex && currentDishIndex !== -1) return;
-      
       // Add transition classes
       mainDishImage.parentElement.classList.add('changing');
       mainDishName.querySelector('.line-1').classList.add('changing');
@@ -1023,10 +988,10 @@ body {
         const line2 = nameParts.slice(1).join(' ');
         mainDishName.innerHTML = `<span class="line-1">${line1}</span><span class="line-2" style="font-weight: 900;">${line2}</span>`;
         mainDishDescription.textContent = dish.description;
-        chefName.textContent = dish.chef;
+        chefName.textContent = dish.chef || "Unknown Chef";
         dishTagline.textContent = dish.tagline;
         dishPrice.textContent = dish.price;
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
         
         // Remove transition classes
         mainDishImage.parentElement.classList.remove('changing');
@@ -1049,11 +1014,7 @@ body {
         
         // Update active carousel item
         document.querySelectorAll('.carousel-item').forEach((item, i) => {
-          if (i === index) {
-            item.classList.add('active');
-          } else {
-            item.classList.remove('active');
-          }
+          item.classList.toggle('active', i === index);
         });
         
         currentDishIndex = index;
@@ -1064,26 +1025,18 @@ body {
     // Filter dishes by category
     function filterDishes(category) {
       document.querySelectorAll('.category-item').forEach(item => {
-        if (item.dataset.category === category) {
-          item.classList.add('active');
-        } else {
-          item.classList.remove('active');
-        }
+        item.classList.toggle('active', item.dataset.category === category);
       });
 
-      // Update filtered dishes and render carousel without resetting the display
+      // Update filtered dishes and render carousel
       renderCarousel(category);
 
-      // If no dish has been selected, set initial restaurant details
-      if (!lastSelectedDish) {
-        currentDishIndex = -1;
-        mainDishImage.src = "https://img.freepik.com/free-vector/building-restaurant-flat-design_23-2147537664.jpg";
-        mainDishName.innerHTML = `<span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span>`;
-        mainDishDescription.textContent = "Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.";
-        chefName.textContent = "Chef Feny";
-        dishTagline.textContent = "#1 Most Popular Restaurant";
-        dishPrice.textContent = "N/A";
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes`;
+      // If a dish is selected and exists in the new category, keep it; otherwise, select the first dish
+      if (lastSelectedDish && filteredDishes.some(dish => dish.name === lastSelectedDish.name)) {
+        const index = filteredDishes.findIndex(dish => dish.name === lastSelectedDish.name);
+        changeDish(index);
+      } else if (filteredDishes.length > 0) {
+        changeDish(0); // Select the first dish in the new category
       }
     }
 
@@ -1098,7 +1051,7 @@ body {
     likeButton.addEventListener('click', () => {
       if (lastSelectedDish) {
         lastSelectedDish.likes++;
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${lastSelectedDish.likes} likes`;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${lastSelectedDish.likes} likes`;
         likeButton.style.color = 'var(--primary-color)';
         setTimeout(() => {
           likeButton.style.color = '';
@@ -1106,12 +1059,12 @@ body {
       }
     });
 
-    playVideo.addEventListener('click', () => {
-      alert('Video playback feature coming soon!');
+    takePicButton.addEventListener('click', () => {
+      alert('Camera feature coming soon! Take a picture of this dish.');
     });
 
-    orderFood.addEventListener('click', () => {
-      alert('Thank you for your interest! Order feature coming soon.');
+    addToListButton.addEventListener('click', () => {
+      alert('Added to your list! This feature is coming soon.');
     });
 
     // Initialize the page
