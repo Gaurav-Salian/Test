@@ -735,7 +735,7 @@ body {
     <div class="info-section">
       <div>
         <h2 id="dish-tagline">#1 Most Popular Indonesian Dish</h2>
-        <h1 id="main-dish-name"><span class="line-1">LOTEK</span><br><span class="line-2" style="font-weight: 900;">PERKEDEL</span></h1>
+        <h1 id="main-dish-name"><span class="line-1">LOTEK</span><span class="line-2" style="font-weight: 900;">PERKEDEL</span></h1>
         <div class="actions">
           <button id="play-video"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Watch</button>
           <button id="order-food"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> Order Now</button>
@@ -1022,7 +1022,7 @@ body {
         const nameParts = dish.name.toUpperCase().split(' ');
         const line1 = nameParts[0];
         const line2 = nameParts.slice(1).join(' ');
-        mainDishName.innerHTML = `<span class="line-1">${line1}</span><br><span class="line-2" style="font-weight: 900;">${line2}</span>`;
+        mainDishName.innerHTML = `<span class="line-1">${line1}</span><span class="line-2" style="font-weight: 900;">${line2}</span>`;
         mainDishDescription.textContent = dish.description;
         chefName.textContent = dish.chef;
         dishTagline.textContent = dish.tagline;
