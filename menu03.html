@@ -1127,7 +1127,6 @@ transform: rotate(180deg);
   color: var(--primary-color);
 }
 
-
 footer {
   text-align: center;
   padding: 2rem;
@@ -1136,18 +1135,56 @@ footer {
   color: var(--text-secondary);
   font-size: 0.9rem;
 }
+
+    .veg-nonveg-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  justify-content: flex-start;
+}
+
+.toggle-button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: white;
+  color: var(--text-color);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  transition: var(--transition);
+}
+
+.toggle-button:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(230, 92, 0, 0.2);
+}
+
+.toggle-button.active {
+  background: var(--primary-color);
+  color: white;
+  font-weight: 600;
+}
+
+.toggle-button.veg::before {
+  content: '🟢';
+  margin-right: 0.3rem;
+}
+
+.toggle-button.nonveg::before {
+  content: '🔴';
+  margin-right: 0.3rem;
+}
+
   </style>
   
 </head>
 <nav class="main-nav">
   <div class="nav-logo">Eazy Menu</div>
-  <button id="list-icon" aria-label="Open List"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-
-stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" 
-
-y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" 
-
-y2="18"></line></svg></button>
+  <button id="list-icon" aria-label="Open List"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
   
     <!-- Modal HTML -->
     <div id="list-modal" class="modal">
@@ -1167,6 +1204,11 @@ y2="18"></line></svg></button>
   <div class="container">
     <div class="category-section">
       <h3>Categories</h3>
+      <div class="veg-nonveg-toggle">
+  <button class="toggle-button all active" data-filter="all">All</button>
+  <button class="toggle-button veg" data-filter="veg">Veg</button>
+  <button class="toggle-button nonveg" data-filter="nonveg">Non-Veg</button>
+</div>
       <div class="category-list" id="category-list">
         <div class="category-item active" data-category="all">All</div>
         <div class="category-item" data-category="breakfast">Breakfast</div>
@@ -1196,16 +1238,8 @@ y2="18"></line></svg></button>
         <h2 id="dish-tagline">#1 Most Popular Restaurant</h2>
         <h1 id="main-dish-name"><span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span></h1>
         <div class="actions">
-          <button id="take-pic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" 
-
-cy="13" r="4"></circle></svg> Take a Pic</button>
-          <button id="add-to-list"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
-
-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add to 
-
-List</button>
+          <button id="take-pic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg> Take a Pic</button>
+          <button id="add-to-list"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add to List</button>
         </div>
       </div>
     </div>
@@ -1225,16 +1259,8 @@ List</button>
         Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.
       </div>
       <div class="thumbs">
-        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
-
-1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
-        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38-9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 
-
-1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
+        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
+        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38-9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
       </div>
     </div>
   </div>
@@ -1248,85 +1274,67 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4
       {
         name: "Idli",
         image: "./images/idli.jpg",
-        description: "FRava Idli is a soft, fluffy, and savory steamed cake made from semolina (rava or sooji), yogurt, and mild spices. Originating from South India, 
-
-it's a light yet filling dish that's perfect for breakfast, brunch, or a wholesome snack. Unlike traditional rice-based idlis, Rava Idli offers a quicker and easier 
-
-preparation without the need for fermentation, making it a go-to choice for busy mornings.",
+        description: "FRava Idli is a soft, fluffy, and savory steamed cake made from semolina (rava or sooji), yogurt, and mild spices. Originating from South India, it's a light yet filling dish that's perfect for breakfast, brunch, or a wholesome snack. Unlike traditional rice-based idlis, Rava Idli offers a quicker and easier preparation without the need for fermentation, making it a go-to choice for busy mornings.",
         category: "breakfast",
         chef: "",
         price: 40,
         likes: "",
+        vegetarian: true,
         tagline: "Soft, Fluffy, and Ready in a Flash!"
       },
       {
         name: "Vada",
         image: "./images/vada.jpg",
-        description: "Rava Vada is a crispy, golden-fried South Indian snack made with semolina (rava/sooji), spices, and herbs. Crunchy on the outside and soft 
-
-inside, these vadas are quick to prepare without any need for soaking or grinding. Perfect as a tea-time treat, party starter, or breakfast delight, Rava Vada brings a 
-
-delicious twist to traditional vadas with its irresistible texture and flavor.",
+        description: "Rava Vada is a crispy, golden-fried South Indian snack made with semolina (rava/sooji), spices, and herbs. Crunchy on the outside and soft inside, these vadas are quick to prepare without any need for soaking or grinding. Perfect as a tea-time treat, party starter, or breakfast delight, Rava Vada brings a delicious twist to traditional vadas with its irresistible texture and flavor.",
         category: "breakfast",
         chef: "",
         price: 50,
         likes: "",
+        vegetarian: true,
         tagline: "The Golden Crunch of South Indian Flavor."
       },
       {
         name: "Golibaje",
         image: "./images/golibaji.jpg",
-        description: "Golibaje, also known as Mangalore Bajji, is a popular South Indian snack hailing from the coastal region of Karnataka. Made from a fermented 
-
-batter of all-purpose flour (maida), yogurt, and spices, these golden, fluffy fritters are mildly sweet, slightly tangy, and incredibly soft inside. Often enjoyed with 
-
-coconut chutney and a cup of hot tea, Golibaje is a heartwarming snack that brings coastal flavors to every bite.",
+        description: "Golibaje, also known as Mangalore Bajji, is a popular South Indian snack hailing from the coastal region of Karnataka. Made from a fermented batter of all-purpose flour (maida), yogurt, and spices, these golden, fluffy fritters are mildly sweet, slightly tangy, and incredibly soft inside. Often enjoyed with coconut chutney and a cup of hot tea, Golibaje is a heartwarming snack that brings coastal flavors to every bite.",
         category: "breakfast",
         chef: "",
         price: 60,
         likes: "",
+        vegetarian: true,
         tagline: "A Bite of Mangalore’s Heartwarming Goodness."
       },
       {
         name: "Tea",
         image: "./images/cha.jpg",
-        description: "Tea is more than just a beverage — it's a timeless ritual that refreshes the mind, soothes the soul, and sparks conversation. Made by steeping 
-
-tea leaves, herbs, or spices in hot water, tea offers endless flavors, from the bold strength of black tea to the calming notes of green and herbal infusions. Whether 
-
-it’s a morning pick-me-up or an evening moment of calm, every cup of tea is a gentle pause in a busy world.",
+        description: "Tea is more than just a beverage — it's a timeless ritual that refreshes the mind, soothes the soul, and sparks conversation. Made by steeping tea leaves, herbs, or spices in hot water, tea offers endless flavors, from the bold strength of black tea to the calming notes of green and herbal infusions. Whether it’s a morning pick-me-up or an evening moment of calm, every cup of tea is a gentle pause in a busy world.",
         category: "beverages",
         chef: "",
         price: 20,
         likes: "",
+        vegetarian: true,
         tagline: "Traditional Morning Starter"
       },
       {
         name: "Chicken Biryani",
         image: "./images/brni.jpg",
-        description: "Chicken Biryani is a timeless, aromatic masterpiece where tender chicken pieces are slow-cooked with fragrant basmati rice, warm spices, and 
-
-herbs. Layered with rich flavors and cooked to perfection, each bite bursts with a symphony of taste — spicy, savory, and soul-satisfying. Whether served at festive 
-
-gatherings or weekend feasts, Chicken Biryani is not just a dish — it’s an experience steeped in tradition and love.",
+        description: "Chicken Biryani is a timeless, aromatic masterpiece where tender chicken pieces are slow-cooked with fragrant basmati rice, warm spices, and herbs. Layered with rich flavors and cooked to perfection, each bite bursts with a symphony of taste — spicy, savory, and soul-satisfying. Whether served at festive gatherings or weekend feasts, Chicken Biryani is not just a dish — it’s an experience steeped in tradition and love.",
         category: "lunch",
         chef: "",
         price: 100,
         likes: "",
+        vegetarian: false,
         tagline: "Where Spice, Rice, and Everything Nice Meet."
       },
       {
         name: "Gudbud Icecream",
         image: "./images/gudbu.jpg",
-        description: "Gudbud Ice Cream is a colorful, indulgent dessert straight from the coastal city of Mangalore. It's a joyful medley of vibrant ice cream scoops, 
-
-fresh fruits, jelly, dry fruits, and nuts — all layered beautifully in a tall glass. Every spoonful offers a surprise of textures and flavors, making it a celebration 
-
-of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s pure happiness served chilled!",
+        description: "Gudbud Ice Cream is a colorful, indulgent dessert straight from the coastal city of Mangalore. It's a joyful medley of vibrant ice cream scoops, fresh fruits, jelly, dry fruits, and nuts — all layered beautifully in a tall glass. Every spoonful offers a surprise of textures and flavors, making it a celebration of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s pure happiness served chilled!",
         category: "desserts",
         chef: "",
         price: 80,
         likes: "",
+        vegetarian: false,
         tagline: "A Festival of Flavors in Every Scoop!"
       },
       {
@@ -1337,6 +1345,7 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
         chef: "Chef Dewi",
         price: 70,
         likes: 78,
+        vegetarian: false,
         tagline: "Veggie Mix with Rich Peanut Sauce"
       },
       {
@@ -1347,6 +1356,7 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
         chef: "Chef Agus",
         price: 120,
         likes: 97,
+        vegetarian: false,
         tagline: "World-Famous Slow-Cooked Beef"
       },
       {
@@ -1357,6 +1367,7 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
         chef: "Chef Bambang",
         price: 90,
         likes: 84,
+        vegetarian: false,
         tagline: "Classic Meatball Comfort Soup"
       },
       {
@@ -1367,6 +1378,7 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
         chef: "Chef Putra",
         price: 85,
         likes: 91,
+        vegetarian: false,
         tagline: "Grilled Skewers with Peanut Sauce"
       },
       {
@@ -1377,6 +1389,7 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
         chef: "Chef Maya",
         price: 45,
         likes: 82,
+        vegetarian: false,
         tagline: "Sweet Coconut Milk Dessert Drink"
       },
       {
@@ -1387,6 +1400,7 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
         chef: "Chef Lina",
         price: 55,
         likes: 79,
+        vegetarian: false,
         tagline: "Colorful Layered Steamed Cake"
       }
     ];
@@ -1418,6 +1432,7 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
     let currentDishIndex = -1; // Set to -1 to indicate no dish is selected initially
     let filteredDishes = [...dishes];
     let lastSelectedDish = null; // Store the last selected dish object
+    let currentVegFilter = 'all'; // Tracks veg, nonveg, or all
 
     // Scroll functions
     function scrollCarousel(amount) {
@@ -1442,35 +1457,43 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
 
     // Render carousel items
     function renderCarousel(category = 'all') {
-      carousel.innerHTML = '';
-      
-      filteredDishes = category === 'all' 
-        ? dishes 
-        : dishes.filter(dish => dish.category === category);
-      
-      filteredDishes.forEach((dish, index) => {
-        const item = document.createElement('div');
-        item.className = 'carousel-item';
-        if (lastSelectedDish && dish.name === lastSelectedDish.name) {
-          item.classList.add('active');
-          currentDishIndex = index;
-        }
-        
-        item.innerHTML = `
-          <img src="${dish.image}" alt="${dish.name}" />
-          <div class="item-name">${dish.name}</div>
-        `;
-        
-        item.addEventListener('click', () => {
-          changeDish(index);
-        });
-        
-        carousel.appendChild(item);
-      });
-      
-      // Reset carousel scroll position
-      carousel.scrollLeft = 0;
+  carousel.innerHTML = '';
+  
+  // Apply category filter
+  let tempDishes = category === 'all' 
+    ? dishes 
+    : dishes.filter(dish => dish.category === category);
+  
+  // Apply veg/non-veg filter
+  filteredDishes = currentVegFilter === 'all'
+    ? tempDishes
+    : tempDishes.filter(dish => 
+        currentVegFilter === 'veg' ? dish.vegetarian : !dish.vegetarian
+      );
+  
+  filteredDishes.forEach((dish, index) => {
+    const item = document.createElement('div');
+    item.className = 'carousel-item';
+    if (lastSelectedDish && dish.name === lastSelectedDish.name) {
+      item.classList.add('active');
+      currentDishIndex = index;
     }
+    
+    item.innerHTML = `
+      <img src="${dish.image}" alt="${dish.name}" />
+      <div class="item-name">${dish.name}</div>
+    `;
+    
+    item.addEventListener('click', () => {
+      changeDish(index);
+    });
+    
+    carousel.appendChild(item);
+  });
+  
+  // Reset carousel scroll position
+  carousel.scrollLeft = 0;
+}
 
     // Change the main dish display
     function changeDish(index) {
@@ -1494,11 +1517,7 @@ of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s p
         chefName.textContent = dish.chef;
         dishTagline.textContent = dish.tagline;
         dishPrice.textContent = dish.price;
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
-
-1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
         
         // Remove transition classes
         mainDishImage.parentElement.classList.remove('changing');
@@ -1535,33 +1554,49 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4
 
     // Filter dishes by category
     function filterDishes(category) {
-      document.querySelectorAll('.category-item').forEach(item => {
-        if (item.dataset.category === category) {
-          item.classList.add('active');
-        } else {
-          item.classList.remove('active');
-        }
-      });
-
-      // Update filtered dishes and render carousel without resetting the display
-      renderCarousel(category);
-
-      // If no dish has been selected, set initial restaurant details
-      if (!lastSelectedDish) {
-        currentDishIndex = -1;
-        mainDishImage.src = "https://img.freepik.com/free-vector/building-restaurant-flat-design_23-2147537664.jpg";
-        mainDishName.innerHTML = `<span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span>`;
-        mainDishDescription.textContent = "Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.";
-        chefName.textContent = "Chef Feny";
-        dishTagline.textContent = "#1 Most Popular Restaurant";
-        dishPrice.textContent = "N/A";
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
-
-1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes`;
-      }
+  document.querySelectorAll('.category-item').forEach(item => {
+    if (item.dataset.category === category) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
     }
+  });
+  
+  // Reset veg/non-veg filter to 'all'
+  currentVegFilter = 'all';
+  document.querySelectorAll('.toggle-button').forEach(button => {
+    button.classList.toggle('active', button.dataset.filter === 'all');
+  });
+  
+  // Update filtered dishes and render carousel
+  renderCarousel(category);
+  
+  // If no dish has been selected, set initial restaurant details
+  if (!lastSelectedDish) {
+    currentDishIndex = -1;
+    mainDishImage.src = "https://img.freepik.com/free-vector/building-restaurant-flat-design_23-2147537664.jpg";
+    mainDishName.innerHTML = `<span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span>`;
+    mainDishDescription.textContent = "Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.";
+    chefName.textContent = "Chef Feny";
+    dishTagline.textContent = "#1 Most Popular Restaurant";
+    dishPrice.textContent = "N/A";
+    likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes`;
+  }
+}
+
+    // Event listener for veg/non-veg toggle
+document.querySelector('.veg-nonveg-toggle').addEventListener('click', (e) => {
+  if (e.target.classList.contains('toggle-button')) {
+    currentVegFilter = e.target.dataset.filter;
+    document.querySelectorAll('.toggle-button').forEach(button => {
+      button.classList.toggle('active', button === e.target);
+    });
+    // Get current category and re-render carousel
+    const activeCategory = document.querySelector('.category-item.active').dataset.category;
+    renderCarousel(activeCategory);
+  }
+});
+    
 
     // Event listeners for category filtering
     categoryList.addEventListener('click', (e) => {
@@ -1574,11 +1609,7 @@ stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4
     likeButton.addEventListener('click', () => {
       if (lastSelectedDish) {
         lastSelectedDish.likes++;
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
-
-stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 
-
-1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${lastSelectedDish.likes} likes`;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${lastSelectedDish.likes} likes`;
         likeButton.style.color = 'var(--primary-color)';
         setTimeout(() => {
           likeButton.style.color = '';
