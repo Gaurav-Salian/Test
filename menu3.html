@@ -15,7 +15,11 @@
       --card-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.08);
       --transition: all 0.3s ease;
       --border-radius: 12px;
+      --modal-background: rgba(0,0,0,0.5);
+      --nav-height: 4.5rem;
       --container-width: 1200px;
+      --receipt-bg: #fcf5eb;
+      --receipt-text: #333;
     }
 
     * {
@@ -28,6 +32,7 @@
     body {
       color: var(--text-color);
       padding: 0;
+      padding-top: var(--nav-height);
       animation: fadeIn 1s ease-in;
       overflow-x: hidden;
       min-height: 100vh;
@@ -48,9 +53,350 @@
       margin: 0 auto;
       padding: 1rem;
       position: relative;
+      padding-top: 1rem;
       width: 100%;
     }
+    
+    /* Navbar Styling */
+    .main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      padding: 0 1.5rem;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      z-index: 100;
+    }
+    
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    
+    /* List Icon Styling */
+    #list-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      outline: none;
+      transition: transform 0.3s ease;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: rgba(255, 102, 0, 0.1);
+      color: var(--primary-color);
+    }
+    
+    #list-icon:hover {
+      transform: scale(1.1);
+      background-color: rgba(255, 102, 0, 0.2);
+    }
+    
+    #list-icon::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      top: 6px;
+      right: 6px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    /* Modal Styling - Receipt Design */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--modal-background);
+      overflow: auto;
+    }
+    
+    .list-modal-content {
+      background-color: var(--receipt-bg);
+      width: 85%;
+      max-width: 400px;
+      margin: 10% auto;
+      position: relative;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      transform: rotate(-1deg);
+      padding: 0;
+      overflow: visible;
+      border-left: 1px dashed #ccc;
+      border-right: 1px dashed #ccc;
+    }
+    
+    /* Receipt Header */
+    .list-modal-header {
+      position: relative;
+      padding: 1.5rem 1rem 0.5rem;
+      text-align: center;
+      border-bottom: 1px dashed #ccc;
+    }
+    
+    .list-modal-header h2 {
+      font-family: 'Courier New', monospace;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--receipt-text);
+    }
+    
+    .list-modal-header::after {
+      content: '';
+      display: block;
+      height: 15px;
+      background-image: 
+        repeating-linear-gradient(
+          -45deg, 
+          transparent, 
+          transparent 5px, 
+          rgba(0,0,0,0.03) 5px, 
+          rgba(0,0,0,0.03) 10px
+        );
+      margin-top: 10px;
+    }
+    
+    /* Torn receipt effect */
+    .list-modal-content::before {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      right: 0;
+      height: 15px;
+      background-image: 
+        radial-gradient(
+          circle at 10px -5px, 
+          transparent 12px, 
+          var(--receipt-bg) 13px
+        );
+      background-size: 20px 20px;
+      background-position: -10px 0;
+      background-repeat: repeat-x;
+transform: rotate(180deg);
+    }
+    
+    /* Close button */
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      background: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--transition);
+      z-index: 10;
+    }
+    
+    .close-button:hover {
+      background-color: rgba(230, 92, 0, 0.1);
+      transform: rotate(90deg);
+    }
+    
+    /* Receipt Items List */
+    .saved-dishes-list {
+      list-style: none;
+      padding: 0.5rem 1rem 1.5rem;
+      margin: 0;
+      overflow-y: auto;
+      max-height: 50vh;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .saved-dishes-list::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-image: 
+        linear-gradient(
+          to right,
+          transparent 0%,
+          #ccc 15%,
+          #ccc 85%,
+          transparent 100%
+        );
+      margin: 1rem 0 0.5rem;
+    }
+    
+    -- .list-item-content {
+    --   background: transparent;
+    --   display: flex;
+    --   align-items: center;
+    --   justify-content: space-between;
+    --   padding: 0.8rem;
+    --   margin: 0.8rem 0;
+    --   gap: 1rem;
+    --   border-bottom: 1px dotted #ccc;
+    --   transition: var(--transition);
+    -- }
 
+    .list-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  margin: 0.8rem 0;
+  gap: 0.5rem;
+  border-bottom: 1px dotted #ccc;
+  transition: var(--transition);
+}
+    
+    .list-item-content:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+      transform: translateX(3px);
+    }
+    
+    .list-item-content img {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    -- .list-item-info {
+    --   flex-grow: 1;
+    --   font-size: 0.9rem;
+    --   line-height: 1.4;
+    -- }
+    .list-item-info {
+  flex-grow: 1;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  max-width: 40%;
+}
+    
+    .list-item-info span {
+      font-size: 0.75rem;
+      color: var(--light-text);
+      font-style: italic;
+    }
+    
+    .delete-button {
+      cursor: pointer;
+      transition: var(--transition);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      border-radius: 50%;
+    }
+    
+    .delete-button:hover {
+      color: #ff3333;
+      background-color: rgba(255, 51, 51, 0.1);
+      transform: rotate(90deg);
+    }
+    
+    /* Receipt footer */
+    .receipt-footer {
+      text-align: center;
+      padding: 0.5rem 1rem 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: var(--light-text);
+    }
+    
+    .receipt-footer::before {
+      content: '';
+      display: block;
+      width: 90%;
+      height: 1px;
+      background-image: 
+        linear-gradient(
+          to right,
+          transparent 0%,
+          #ccc 15%,
+          #ccc 85%,
+          transparent 100%
+        );
+      margin: 0 auto 1rem;
+    }
+    
+    /* QR Code style at the bottom of receipt */
+    .receipt-qr {
+      width: 70px;
+      height: 70px;
+      margin: 0.5rem auto;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: #999;
+      background-image: 
+        linear-gradient(to right, #000 25%, transparent 25%, transparent 75%, #000 75%),
+        linear-gradient(to bottom, #000 25%, transparent 25%, transparent 75%, #000 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+    }
+    
+    .receipt-barcode {
+      height: 30px;
+      width: 85%;
+      margin: 0.5rem auto;
+      display: flex;
+      align-items: center;
+    }
+    
+    .receipt-barcode span {
+      display: inline-block;
+      height: 100%;
+      width: 2px;
+      background-color: #333;
+      margin-right: 3px;
+      opacity: 0.7;
+    }
+    
+    .receipt-barcode span:nth-child(2n) {
+      height: 70%;
+    }
+    
+    .receipt-barcode span:nth-child(3n) {
+      height: 85%;
+    }
+    
+    .receipt-barcode span:nth-child(5n) {
+      height: 60%;
+    }
+    
+    /* Other existing styles */
     /* Category Section Styling */
     .category-section {
       width: 100%;
@@ -617,6 +963,11 @@
       .carousel-item .item-name {
         font-size: 0.75rem;
       }
+      
+      .list-modal-content {
+        width: 95%;
+        margin: 5% auto;
+      }
     }
 
     @media (min-width: 481px) and (max-width: 768px) {
@@ -709,8 +1060,103 @@
         margin: 0 auto;
       }
     }
+
+    /* Quantity Controls */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantity-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.quantity-btn:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.1);
+}
+
+.quantity {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.item-price {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  min-width: 60px;
+  text-align: right;
+}
+
+/* Total Bill */
+.total-bill {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+}
+
+.bill-line {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  margin-bottom: 1rem;
+}
+
+.bill-total {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.total-amount {
+  color: var(--primary-color);
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
   </style>
+  
 </head>
+<nav class="main-nav">
+  <div class="nav-logo">Eazy Menu</div>
+  <button id="list-icon" aria-label="Open List"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+  
+    <!-- Modal HTML -->
+    <div id="list-modal" class="modal">
+      <div class="list-modal-content">
+        <span class="close-button">&times;</span>
+        <div class="list-modal-header">
+            <h2>Your Saved Dishes</h2>
+        </div>
+          <ul id="saved-dishes-list">
+          <!-- List items will be added here by JavaScript -->
+        </ul>
+      </div>
+    </div>
+</nav>
+
 <body>
   <div class="container">
     <div class="category-section">
@@ -765,77 +1211,81 @@
         Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.
       </div>
       <div class="thumbs">
-        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
-        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
+        <span id="like-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes</span>
+        <span id="dislike-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38-9a2 2 0 0 0 2 2.3H10z"></path><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"></path></svg></span>
       </div>
     </div>
   </div>
-  
+<footer>
+  <p>© 2025 Glizch. All rights reserved. <a href="/privacy.html">Privacy Policy</a> | <a href="/terms.html">Terms of Service</a> <br>
+        Made with "💖" From TuluNadu,India
+        </p>
+  </footer>
   <script>
     const dishes = [
       {
         name: "Idli",
-        image: "https://img.freepik.com/free-photo/south-indian-food-dosa-idli-chutney-sambar_466689-80006.jpg",
-        description: "Rava Idli is a soft, fluffy, and savory steamed cake made from semolina (rava or sooji), yogurt, and mild spices. Originating from South India, it's a light yet filling dish that's perfect for breakfast, brunch, or a wholesome snack.",
+        image: "./images/idli.jpg",
+        description: "FRava Idli is a soft, fluffy, and savory steamed cake made from semolina (rava or sooji), yogurt, and mild spices. Originating from South India, it's a light yet filling dish that's perfect for breakfast, brunch, or a wholesome snack. Unlike traditional rice-based idlis, Rava Idli offers a quicker and easier preparation without the need for fermentation, making it a go-to choice for busy mornings.",
         category: "breakfast",
         chef: "",
         price: 40,
-        likes: 0,
+        likes: "",
         tagline: "Soft, Fluffy, and Ready in a Flash!"
       },
       {
         name: "Vada",
-        image: "https://img.freepik.com/free-photo/indian-vada-sambar-chutney-served-banana-leaf-south-indian-breakfast_466689-98412.jpg",
-        description: "Rava Vada is a crispy, golden-fried South Indian snack made with semolina (rava/sooji), spices, and herbs. Crunchy on the outside and soft inside, these vadas are quick to prepare without any need for soaking or grinding.",
+        image: "./images/vada.jpg",
+        description: "Rava Vada is a crispy, golden-fried South Indian snack made with semolina (rava/sooji), spices, and herbs. Crunchy on the outside and soft inside, these vadas are quick to prepare without any need for soaking or grinding. Perfect as a tea-time treat, party starter, or breakfast delight, Rava Vada brings a delicious twist to traditional vadas with its irresistible texture and flavor.",
         category: "breakfast",
         chef: "",
         price: 50,
-        likes: 0,
+        likes: "",
         tagline: "The Golden Crunch of South Indian Flavor."
       },
       {
         name: "Golibaje",
-        image: "https://img.freepik.com/free-photo/pakora-pakoda-is-popular-indian-snack-made-from-chickpea-flour-besan-spices_466689-97193.jpg",
-        description: "Golibaje, also known as Mangalore Bajji, is a popular South Indian snack hailing from the coastal region of Karnataka. Made from a fermented batter of all-purpose flour (maida), yogurt, and spices, these golden, fluffy fritters are mildly sweet and tangy.",
+        image: "./images/golibaji.jpg",
+        description: "Golibaje, also known as Mangalore Bajji, is a popular South Indian snack hailing from the coastal region of Karnataka. Made from a fermented batter of all-purpose flour (maida), yogurt, and spices, these golden, fluffy fritters are mildly sweet, slightly tangy, and incredibly soft inside. Often enjoyed with coconut chutney and a cup of hot tea, Golibaje is a heartwarming snack that brings coastal flavors to every bite.",
         category: "breakfast",
         chef: "",
         price: 60,
-        likes: 0,
+        likes: "",
         tagline: "A Bite of Mangalore’s Heartwarming Goodness."
       },
       {
         name: "Tea",
-        image: "https://img.freepik.com/free-photo/top-view-tea-cup-with-teapot-leaves_23-2148839293.jpg",
-        description: "Tea is more than just a beverage — it's a timeless ritual that refreshes the mind, soothes the soul, and sparks conversation. Made by steeping tea leaves, herbs, or spices in hot water, tea offers endless flavors.",
+        image: "./images/cha.jpg",
+        description: "Tea is more than just a beverage — it's a timeless ritual that refreshes the mind, soothes the soul, and sparks conversation. Made by steeping tea leaves, herbs, or spices in hot water, tea offers endless flavors, from the bold strength of black tea to the calming notes of green and herbal infusions. Whether it’s a morning pick-me-up or an evening moment of calm, every cup of tea is a gentle pause in a busy world.",
         category: "beverages",
         chef: "",
         price: 20,
-        likes: 0,
+        likes: "",
         tagline: "Traditional Morning Starter"
       },
       {
         name: "Chicken Biryani",
-        image: "https://img.freepik.com/free-photo/chicken-biryani-with-onions-spices_2829-11408.jpg",
-        description: "Chicken Biryani is a timeless, aromatic masterpiece where tender chicken pieces are slow-cooked with fragrant basmati rice, warm spices, and herbs. Layered with rich flavors and cooked to perfection.",
+        image: "./images/brni.jpg",
+        description: "Chicken Biryani is a timeless, aromatic masterpiece where tender chicken pieces are slow-cooked with fragrant basmati rice, warm spices, and herbs. Layered with rich flavors and cooked to perfection, each bite bursts with a symphony of taste — spicy, savory, and soul-satisfying. Whether served at festive gatherings or weekend feasts, Chicken Biryani is not just a dish — it’s an experience steeped in tradition and love.",
         category: "lunch",
         chef: "",
         price: 100,
-        likes: 0,
+        likes: "",
         tagline: "Where Spice, Rice, and Everything Nice Meet."
       },
       {
         name: "Gudbud Icecream",
-        image: "https://img.freepik.com/free-photo/ice-cream_74190-2502.jpg",
-        description: "Gudbud Ice Cream is a colorful, indulgent dessert straight from the coastal city of Mangalore. It's a joyful medley of vibrant ice cream scoops, fresh fruits, jelly, dry fruits, and nuts — all layered beautifully in a tall glass.",
+        image: "./images/gudbu.jpg",
+        description: "Gudbud Ice Cream is a colorful, indulgent dessert straight from the coastal city of Mangalore. It's a joyful medley of vibrant ice cream scoops, fresh fruits, jelly, dry fruits, and nuts — all layered beautifully in a tall glass. Every spoonful offers a surprise of textures and flavors, making it a celebration of sweetness, crunch, and creaminess. Gudbud isn’t just an ice cream; it’s pure happiness served chilled!",
         category: "desserts",
         chef: "",
         price: 80,
-        likes: 0,
+        likes: "",
         tagline: "A Festival of Flavors in Every Scoop!"
       },
       {
         name: "Gado-Gado",
-        image: "https://img.freepik.com/free-photo/gado-gado-traditional-indonesian-salad-dish-served-with-peanut-sauce_1150-42979.jpg",
+        image: "https://img.freepik.com/free-photo/gado-gado-traditional-indonesian-salad-dish-served-with-peanut-sauce_1150-42979.jpg?size=626&ext=jpg",
         description: "Mixed vegetables with rich peanut sauce, boiled eggs and crispy crackers. A healthy vegetarian option.",
         category: "salads",
         chef: "Chef Dewi",
@@ -845,7 +1295,7 @@
       },
       {
         name: "Rendang",
-        image: "https://img.freepik.com/free-photo/delicious-beef-rendang-cuisine-served-plate_23-2149086051.jpg",
+        image: "https://img.freepik.com/free-photo/delicious-beef-rendang-cuisine-served-plate_23-2149086051.jpg?size=626&ext=jpg",
         description: "Slow-cooked beef in rich coconut milk and complex spice sauce. Known as one of the world's most delicious dishes.",
         category: "dinner",
         chef: "Chef Agus",
@@ -855,7 +1305,7 @@
       },
       {
         name: "Bakso",
-        image: "https://img.freepik.com/free-photo/bakso-meatball-soup-served-with-noodles-ready-eat_450066-966.jpg",
+        image: "https://img.freepik.com/free-photo/bakso-meatball-soup-served-with-noodles-ready-eat_450066-966.jpg?size=626&ext=jpg",
         description: "Beef meatball soup with noodles, fresh greens, crispy wontons and aromatic broth. A street food classic.",
         category: "soups",
         chef: "Chef Bambang",
@@ -865,7 +1315,7 @@
       },
       {
         name: "Sate Ayam",
-        image: "https://img.freepik.com/free-photo/chicken-skewers-with-slices-sweet-peppers-dill_2829-18813.jpg",
+        image: "https://img.freepik.com/free-photo/chicken-skewers-with-slices-sweet-peppers-dill_2829-18813.jpg?size=626&ext=jpg",
         description: "Grilled chicken skewers with rich peanut sauce and rice cakes. Indonesia's most famous street food.",
         category: "appetizers",
         chef: "Chef Putra",
@@ -875,7 +1325,7 @@
       },
       {
         name: "Es Cendol",
-        image: "https://img.freepik.com/free-photo/cendol-green-rice-flour-jelly-coconut-milk-gula-melaka-palm-sugar-dessert_1339-52259.jpg",
+        image: "https://img.freepik.com/free-photo/cendol-green-rice-flour-jelly-coconut-milk-gula-melaka-palm-sugar-dessert_1339-52259.jpg?size=626&ext=jpg",
         description: "Iced dessert with coconut milk, palm sugar syrup and green rice flour jelly. Refreshing and sweet.",
         category: "beverages",
         chef: "Chef Maya",
@@ -885,7 +1335,7 @@
       },
       {
         name: "Kue Lapis",
-        image: "https://img.freepik.com/free-photo/kue-lapis-traditional-indonesian-layered-cake-made-with-pandan-coconut-milk_1150-45186.jpg",
+        image: "https://img.freepik.com/free-photo/kue-lapis-traditional-indonesian-layered-cake-made-with-pandan-coconut-milk_1150-45186.jpg?size=626&ext=jpg",
         description: "Layered steamed cake with vibrant colors and subtle spice flavors. A festive treat.",
         category: "desserts",
         chef: "Chef Lina",
@@ -913,10 +1363,15 @@
     const categoryLeft = document.getElementById('category-left');
     const categoryRight = document.getElementById('category-right');
 
+    //modal element
+    const listIcon = document.getElementById('list-icon');
+    const listModal = document.getElementById('list-modal');
+    const closeButton = document.querySelector('.close-button');
+    const savedDishesList = document.getElementById('saved-dishes-list');
     // Enhanced functionality
-    let currentDishIndex = -1; // No dish selected initially
+    let currentDishIndex = -1; // Set to -1 to indicate no dish is selected initially
     let filteredDishes = [...dishes];
-    let lastSelectedDish = null; // No dish selected initially
+    let lastSelectedDish = null; // Store the last selected dish object
 
     // Scroll functions
     function scrollCarousel(amount) {
@@ -973,6 +1428,8 @@
 
     // Change the main dish display
     function changeDish(index) {
+      if (index === currentDishIndex && currentDishIndex !== -1) return;
+      
       // Add transition classes
       mainDishImage.parentElement.classList.add('changing');
       mainDishName.querySelector('.line-1').classList.add('changing');
@@ -988,10 +1445,10 @@
         const line2 = nameParts.slice(1).join(' ');
         mainDishName.innerHTML = `<span class="line-1">${line1}</span><span class="line-2" style="font-weight: 900;">${line2}</span>`;
         mainDishDescription.textContent = dish.description;
-        chefName.textContent = dish.chef || "Unknown Chef";
+        chefName.textContent = dish.chef;
         dishTagline.textContent = dish.tagline;
         dishPrice.textContent = dish.price;
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${dish.likes} likes`;
         
         // Remove transition classes
         mainDishImage.parentElement.classList.remove('changing');
@@ -1014,7 +1471,11 @@
         
         // Update active carousel item
         document.querySelectorAll('.carousel-item').forEach((item, i) => {
-          item.classList.toggle('active', i === index);
+          if (i === index) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
         });
         
         currentDishIndex = index;
@@ -1025,18 +1486,26 @@
     // Filter dishes by category
     function filterDishes(category) {
       document.querySelectorAll('.category-item').forEach(item => {
-        item.classList.toggle('active', item.dataset.category === category);
+        if (item.dataset.category === category) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
       });
 
-      // Update filtered dishes and render carousel
+      // Update filtered dishes and render carousel without resetting the display
       renderCarousel(category);
 
-      // If a dish is selected and exists in the new category, keep it; otherwise, select the first dish
-      if (lastSelectedDish && filteredDishes.some(dish => dish.name === lastSelectedDish.name)) {
-        const index = filteredDishes.findIndex(dish => dish.name === lastSelectedDish.name);
-        changeDish(index);
-      } else if (filteredDishes.length > 0) {
-        changeDish(0); // Select the first dish in the new category
+      // If no dish has been selected, set initial restaurant details
+      if (!lastSelectedDish) {
+        currentDishIndex = -1;
+        mainDishImage.src = "https://img.freepik.com/free-vector/building-restaurant-flat-design_23-2147537664.jpg";
+        mainDishName.innerHTML = `<span class="line-1">Restaurant</span><span class="line-2" style="font-weight: 900;">Name</span>`;
+        mainDishDescription.textContent = "Fresh ingredients with signature spices, always perfectly prepared and beautifully wrapped to preserve authentic flavors.";
+        chefName.textContent = "Chef Feny";
+        dishTagline.textContent = "#1 Most Popular Restaurant";
+        dishPrice.textContent = "N/A";
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> 98 likes`;
       }
     }
 
@@ -1051,7 +1520,7 @@
     likeButton.addEventListener('click', () => {
       if (lastSelectedDish) {
         lastSelectedDish.likes++;
-        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${lastSelectedDish.likes} likes`;
+        likeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"></path><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg> ${lastSelectedDish.likes} likes`;
         likeButton.style.color = 'var(--primary-color)';
         setTimeout(() => {
           likeButton.style.color = '';
@@ -1063,12 +1532,113 @@
       alert('Camera feature coming soon! Take a picture of this dish.');
     });
 
+    //Add to list
+    let dishList = JSON.parse(localStorage.getItem('dishList')) || [];
+    
     addToListButton.addEventListener('click', () => {
-      alert('Added to your list! This feature is coming soon.');
-    });
+  if (lastSelectedDish) {
+    // Check if dish already exists in the list
+    const existingDishIndex = dishList.findIndex(item => item.name === lastSelectedDish.name);
+    
+    if (existingDishIndex !== -1) {
+      // Increment quantity if dish already exists
+      dishList[existingDishIndex].quantity += 1;
+    } else {
+      // Add new dish with quantity 1
+      const now = new Date();
+      const dishToAdd = {
+        name: lastSelectedDish.name,
+        dateTime: now.toLocaleString(),
+        price: lastSelectedDish.price,
+        quantity: 1,
+        image: lastSelectedDish.image
+      };
+      dishList.push(dishToAdd);
+    }
+    
+    localStorage.setItem('dishList', JSON.stringify(dishList));
+    updateSavedDishesList();
+  }
+});
 
+    //update saved dish list
+    function updateSavedDishesList() {
+  savedDishesList.innerHTML = '';
+  let totalBill = 0;
+  
+  dishList.forEach((dish, index) => {
+    const listItem = document.createElement("li");
+    listItem.classList.add("list-item-content");
+    
+    // Calculate item total
+    const itemTotal = dish.price * dish.quantity;
+    totalBill += itemTotal;
+    
+    const listContent = `
+      <img src="${dish.image}" alt="${dish.name}"/>
+      <div class="list-item-info">
+        ${dish.name} <br> 
+        <span style="font-size:0.8rem">₹${dish.price} × ${dish.quantity}</span>
+      </div>
+      <div class="quantity-controls">
+        <button class="quantity-btn minus" data-index="${index}">-</button>
+        <span class="quantity">${dish.quantity}</span>
+        <button class="quantity-btn plus" data-index="${index}">+</button>
+      </div>
+      <div class="item-price">₹${itemTotal}</div>
+    `;
+    
+    listItem.innerHTML = listContent;
+    savedDishesList.appendChild(listItem);
+  });
+
+
+
+  if (dishList.length > 0) {
+    const totalElement = document.createElement("div");
+    totalElement.classList.add("total-bill");
+    totalElement.innerHTML = `
+      <div class="bill-line"></div>
+      <div class="bill-total">
+        <span>Total Bill:</span>
+        <span class="total-amount">₹${totalBill}</span>
+      </div>
+    `;
+    savedDishesList.appendChild(totalElement);
+  }
+}
+    
+    //delete item
+    savedDishesList.addEventListener('click', (e) => {
+  if (e.target.classList.contains('minus')) {
+    const index = parseInt(e.target.dataset.index);
+    if (dishList[index].quantity > 1) {
+      dishList[index].quantity -= 1;
+    } else {
+      // If quantity reaches 0, remove the item
+      if (confirm("Remove this item from your list?")) {
+        dishList.splice(index, 1);
+      }
+    }
+    localStorage.setItem('dishList', JSON.stringify(dishList));
+    updateSavedDishesList();
+  } else if (e.target.classList.contains('plus')) {
+    const index = parseInt(e.target.dataset.index);
+    dishList[index].quantity += 1;
+    localStorage.setItem('dishList', JSON.stringify(dishList));
+    updateSavedDishesList();
+  }
+});
+
+    
+    // Initialize the modal
+    listIcon.addEventListener('click', () => { listModal.style.display = 'block'; updateSavedDishesList() });
+    closeButton.addEventListener('click', () => listModal.style.display = 'none');
+    window.addEventListener('click', (event) => { if (event.target == listModal) { listModal.style.display = 'none'; } });
+    
     // Initialize the page
     renderCarousel();
+  
   </script>
 </body>
 </html>
